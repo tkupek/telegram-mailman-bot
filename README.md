@@ -1,4 +1,4 @@
-"# Telegram Mailman Moderator Bot" 
+# Telegram Mailman Moderator Bot
 
 - TODO flexible connection settings in handler.setup
 - TODO do not notify twice for the same id
