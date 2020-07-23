@@ -5,3 +5,4 @@
 
 - TODO create http response for bot status, including the current number of connections
 - TODO make data.mailmanConnections persistent when restarting the server
+- TODO update README with usage documentation
