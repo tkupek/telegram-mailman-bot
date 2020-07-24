@@ -12,8 +12,7 @@ const handler = {
 	init: function(botmodule, datamodule) {
 		data = datamodule;
 		bot = botmodule;
-	},
-	registerHandler: function() {
+
 		bot.start(handler.start);
 		bot.help(handler.help);
 		bot.command('setup', handler.setup);
@@ -24,7 +23,7 @@ const handler = {
 		bot.command('reject', handler.reject);
 		bot.command('check', handler.check);
 		console.log('bot initialized...')
-    },
+	},
 	start: async function(ctx) {
 		let connection = await data.mailmanConnections.get(ctx.chat.id);
 

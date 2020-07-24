@@ -35,7 +35,7 @@ async function del(key) {
 
 async function query(query) {
 	try {
-		let result = await datastore.runQuery(datastore.createQuery(query));
+		let result = await datastore.runQuery(query);
 		return result[0].map(function(val) {
 			return [val[datastore.KEY]['id'], val];
 		});
@@ -57,7 +57,10 @@ const data = {
 			return del(['connection', id]);
 		},
 		all: function() {
-			return query('connection');
+			return query(datastore.createQuery('connection'));
+		},
+		count: async function() {
+			return (await query(datastore.createQuery('connection').select('__key__'))).length;
 		}
 	},
 	openDecisions: {
