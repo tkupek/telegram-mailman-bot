@@ -22,15 +22,15 @@ app.get('/', async (req, res) => {
  	res.send('The Telegram MailmanModeratorBot is up and running.<br/><br/>' + String(num_connections) + ' connection' + (num_connections == 1 ? '' : 's') + ' monitored.');
 });
 app.get('/favicon.ico', (req, res) => res.sendStatus(204));
-app.get('/_ah/stop', (req, res) => {
+app.get('/_ah/stop', async (req, res) => {
 	// this is not working, bot is not stopped correctly and http 500 is given
-	bot.stop(() => {
+	await bot.stop(() => {
 		console.log('bot stopped...')
 		res.sendStatus(200)
 	});
 });
-app.get('/_ah/start', (req, res) => {
-	bot.launch();
+app.get('/_ah/start', async (req, res) => {
+	await bot.launch();
 	res.sendStatus(200);
 });
 
