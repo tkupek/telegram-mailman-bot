@@ -10,7 +10,7 @@ handler.init(bot, data);
 handler.registerHandler();
 
 cron.schedule('*/1 * * * *', function() {
-	handler.updateAll();
+	handler.update_all();
 });
 
 bot.launch();
