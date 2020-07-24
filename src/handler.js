@@ -98,6 +98,7 @@ const handler = {
 		}
 		
 		connections.forEach(async ([id, connection]) => {
+			id = parseInt(id);
 			let heldMail = await mailman.getHeldMails(connection);
 			if(!heldMail) {
 				return;
@@ -108,11 +109,11 @@ const handler = {
 				return;
 			}
 
-			// if(await data.openDecisions.get(id)) {
+			if(await data.openDecisions.get(id)) {
+				return; // decision already pending
+			}
 
-			// }
-
-			await data.openDecisions.set(parseInt(id), {'list': heldMail.list, 'request_id': heldMail.request_id});
+			await data.openDecisions.set(id, {'list': heldMail.list, 'request_id': heldMail.request_id});
 			bot.telegram.sendMessage(id, tm.getMessage('MAIL_NOTIFICATION', [heldMail.list, heldMail.from, heldMail.subject, heldMail.reason]), Markup
 				.keyboard(tm.getKeyboard('KEYBOARD_DECISION'), {columns: 3})
 				.oneTime()
