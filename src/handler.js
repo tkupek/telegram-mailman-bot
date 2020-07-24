@@ -108,7 +108,11 @@ const handler = {
 				return;
 			}
 
-			await data.openDecisions.set(id, {'list': heldMail.list, 'request_id': heldMail.request_id});
+			// if(await data.openDecisions.get(id)) {
+
+			// }
+
+			await data.openDecisions.set(parseInt(id), {'list': heldMail.list, 'request_id': heldMail.request_id});
 			bot.telegram.sendMessage(id, tm.getMessage('MAIL_NOTIFICATION', [heldMail.list, heldMail.from, heldMail.subject, heldMail.reason]), Markup
 				.keyboard(tm.getKeyboard('KEYBOARD_DECISION'), {columns: 3})
 				.oneTime()
@@ -140,6 +144,7 @@ const handler = {
 		if(result instanceof Error) {
 			return ctx.reply(tm.getMessage('DECISION_FAILED'), Markup.removeKeyboard().extra());
 		}
+		await data.openDecisions.delete(ctx.chat.id);
 
 		setTimeout(function () {
 			handler.update_all(ctx.chat.id);
