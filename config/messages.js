@@ -4,7 +4,7 @@ const messages = {
         'START_INITIALIZED': 'Your connection is setup. Wait for a new message or call /update\ to pull.',
         'START_NOT_INITIALIZED': 'Welcome to Mailman Moderator Bot! To initialize your connection, type /setup.',
         'HELP': 'This bot can help you to moderate your mailman lists via Telegram Chat. To start, type /setup.',
-        'MAIL_NOTIFICATION': 'Mailman message on hold!\n\nList: {{0}}\nFrom: {{1}}\nSubject: {{2}}\nReason: {{3}}\n\nWhat\s your decision?',
+        'MAIL_NOTIFICATION': 'Mailman message on hold!\n\nList: {{0}}\nFrom: {{1}}\nSubject: {{2}}\nReason: {{3}}\n\nWhat\'s your decision?',
         'SETUP_SUCCESSFUL': '\n\nMailman connection successfully initialized. You can now wait for a message or call an manual /update.',
         'RESET': 'Everything clear. Bot was reset. Call /setup to start again.',
         'NOT_INITIALIZED': 'Connection to mailman not initialized. Call /setup.',

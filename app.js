@@ -3,7 +3,6 @@ const cron = require('node-cron');
 
 const data = require('./src/data');
 const handler = require('./src/handler');
-const mailman = require('./src/mailman');
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 

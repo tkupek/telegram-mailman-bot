@@ -35,14 +35,14 @@ const mailman = {
 				'from': entry.sender,
 				'subject': entry.subject,
 				'reason': entry.reason,
-				'request_id': entry.request_id
+				'request_id': entry.request_id,
+				'remaining': result.total_size -1
 			};
 		}
 
-		return;
+		return; // TODO find more elegant solution
 	},
 	checkConnection: async function(connection) {
-		// check mailman connection
 		try {
 			let response = await axios.get(connection.url + '/system/versions', {
 				auth: {
@@ -72,7 +72,12 @@ const mailman = {
 		}
 
 		return true;
-	}
+	},
+	actions: Object.freeze({
+		accept: 'accept',
+		discard: 'discard',
+		reject: 'reject'
+	})
 };
 
 module.exports = mailman;

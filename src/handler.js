@@ -83,15 +83,18 @@ const handler = {
 			return ctx.reply(tm.getMessage('CONNECTION_CHECK_FAIL'));
 		}
 
-		console.log(was_setup);
 		let message = tm.getMessage('CONNECTION_CHECK_SUCCESS', [result]);
 		if(was_setup) {
 			message += tm.getMessage('SETUP_SUCCESSFUL');
 		}
 		return ctx.reply(message, [result]);
 	},
-	updateAll: async function() {
+	updateAll: async function(client_id) {
 		data.mailmanConnections.forEach(async (connection, id, map) => {
+			if(client_id && client_id !== id) {
+				return;
+			}
+
 			let heldMail = await mailman.getHeldMails(connection);
 			if(!heldMail) {
 				return;
@@ -111,13 +114,13 @@ const handler = {
 		});
 	},
 	accept: async function(ctx) {
-		return await handler.decide(ctx, 'accept');
+		return await handler.decide(ctx, mailman.actions.accept);
 	},
 	discard: async function(ctx) {
-		return await handler.decide(ctx, 'discard');
+		return await handler.decide(ctx, mailman.actions.discard);
 	},
 	reject: async function(ctx) {
-		return await handler.decide(ctx, 'reject');
+		return await handler.decide(ctx, mailman.actions.reject);
 	},
 	decide: async function(ctx, action) {
 		let connection = data.mailmanConnections.get(ctx.chat.id);
@@ -134,6 +137,11 @@ const handler = {
 		if(result instanceof Error) {
 			return ctx.reply(tm.getMessage('DECISION_FAILED'));
 		}
+
+		setTimeout(function () {
+			handler.updateAll(ctx.chat.id);
+		}, 3000)
+
 		return ctx.reply(tm.getMessage('MODERATION_SUCCESS', [action]));
 	}
 };
