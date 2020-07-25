@@ -1,0 +1,28 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    title Telegram Mailman Bot Setup
+    style
+        include style.css
+#form_container
+    h2 Telegram Mailman Bot Setup
+    form.form-style(action='/setup' method='POST' enctype='application/x-www-form-urlencoded')
+        .form_description
+            p Description...
+        ul
+            li
+                label.description(for='host') Host
+                input#host.element.text.medium(type='text' name='host' value='' placeholder='https://lists.example.org')
+            li
+                label.description(for='username') Username
+                input#username.element.text.medium(type='text' name='username' value='')
+            li
+                label.description(for='password') Password
+                input#password.element.text.medium(type='password' name='password' value='')
+            li
+                label.description(for='xAuthHeader') X-Auth Header
+                input#xAuthHeader.element.text.medium(type='password' name='xAuthHeader' value='')
+            li.buttons
+                // adjust type from 'text' to 'hidden' for prod
+                input#session.element.text.medium(type='hidden' name='session' value=sessionId)
+                input#saveForm.button_text(type='submit' name='submit' value='Submit')

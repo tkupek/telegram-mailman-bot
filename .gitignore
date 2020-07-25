@@ -3,3 +3,4 @@ node_modules/
 .gcloudignore
 app.yaml
 firebase-debug.log
+.idea/
