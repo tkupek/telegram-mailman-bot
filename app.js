@@ -5,9 +5,12 @@ const pug = require('pug');
 const cron = require('node-cron');
 const { Telegraf } = require('telegraf');
 
+const SetupModel = require("./src/setup-model")
 const data = require('./src/data');
 const handler = require('./src/handler');
+const setupController = require('./src/setup-controller');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const setupFields = setupController.setupFields;
 
 // Start Bot
 const bot = new Telegraf(process.env.BOT_TOKEN)
@@ -24,7 +27,7 @@ const app = express();
 app.get('/', async (req, res) => {
 	let num_connections = await data.mailmanConnections.count();
  	const compiledSetup = pug.compileFile(__dirname + '/resources/status.pug');
-	res.send(compiledSetup({connections: 1}));
+	res.send(compiledSetup({connections: num_connections}));
 });
 app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 app.get('/_ah/stop', async (req, res) => {
@@ -40,33 +43,57 @@ app.get('/_ah/start', async (req, res) => {
 });
 
 app.get("/setup", [
-	query('id').isHash('sha1')
+	query('id').isHash(setupFields.sessionIdHash)
 ], function (req, res) {
 	let session_id = null;
 	const validationError = validationResult(req);
+
 	if(validationError.isEmpty()) {
 		session_id = req.query.id;
 	}
 	const compiledSetup = pug.compileFile(__dirname + '/resources/setup.pug');
-	res.send(compiledSetup({sessionId: req.query.id}));
+	res.send(compiledSetup({sessionId: session_id}));
 });
 app.post('/setup', urlencodedParser, [
-	body('session').isHash('sha1'),
-	body('host').isURL({protocols: ['http', 'https']}),
-	body('lists').isString(),
-	body('username').isString(),
-	body('password').isString(),
-	body('xAuthHeader').isString()
+	body(setupFields.sessionId).isHash(setupFields.sessionIdHash),
+	body(setupFields.host).isURL({protocols: ['http', 'https']}),
+	body(setupFields.listsRegex).isString(),
+	body(setupFields.username).isString(),
+	body(setupFields.password).isString(),
+	body(setupFields.xAuthHeader).isString()
 ], function (req, res) {
 	const validationError = validationResult(req);
-	if(!validationError.isEmpty()) {
-		return res.status(400).json({ errors: validationError.array() });
+	const data = req.body;
+	let responseCode;
+	let errorResponseArray;
+
+	if(validationError.isEmpty()) {
+		const newSetupData = new SetupModel(
+			data.sessionId,
+			data.host,
+			data.listsRegex,
+			data.username,
+			data.password,
+			data.xAuthHeader
+		);
+		errorResponseArray = setupController.checkAndSaveSetup(newSetupData);
+
+		if(errorResponseArray) {
+			responseCode = 200;
+			console.log("Setup successful for:")
+		} else {
+			responseCode = 500;
+			console.log("Setup unsuccessful for:")
+		}
+		console.log(data)
+	} else {
+		responseCode = 400;
+		errorResponseArray = validationError.array();
 	}
 
-	res.send('welcome!\n');
-	console.log(req.body)
+	res.status(responseCode).json({ data: data, errors:  errorResponseArray});
 });
 
-app.listen(80, () => {
+app.listen(8080, () => {
 	console.log('webserver initialized and listening on port [' + process.env.PORT + ']');
 });

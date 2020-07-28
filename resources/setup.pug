@@ -25,13 +25,13 @@ block content
 						div#input
 
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input#url(class='mdl-textfield__input', type='text', placeholder='https://lists.example.org', pattern='https:\/\/.{1,}\..{2,}')
+								input#url(class='mdl-textfield__input', type='text', pattern='https:\/\/.{1,}\..{2,}')
 								label(class='mdl-textfield__label', for='host') API URL (https://lists.example.org/api/3.1)
 								span(class='mdl-textfield__error', for='host') Input is not a valid HTTPS URL!
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input#lists(class='mdl-textfield__input', type='text', placeholder='^foo@lists.example.org$|bar@lists.example.org$')
-								label(class='mdl-textfield__label', for='lists') Lists (regex matching - enter '*' to select all lists)
+								input#listsRegex(class='mdl-textfield__input', type='text', placeholder='^foo@lists.example.org$|bar@lists.example.org$')
+								label(class='mdl-textfield__label', for='listsRegex') Lists (regex matching - enter '*' to select all lists)
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
 								input#username(class='mdl-textfield__input', type='text')
@@ -41,9 +41,9 @@ block content
 								label(class='mdl-textfield__label', for='password') Password
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input#header(class='mdl-textfield__input', type='text', pattern='\{.*\}')
-								label(class='mdl-textfield__label', for='header') X-Auth Header (optional)
-								span(class='mdl-textfield__error', for='host') Input is not a valid Header!
+								input#xAuthHeader(class='mdl-textfield__input', type='text', pattern='\{.*\}')
+								label(class='mdl-textfield__label', for='xAuthHeader') X-Auth Header (optional)
+								span(class='mdl-textfield__error', for='xAuthHeader') Input is not a valid Header!
 							br
 							div#sessionId(class='hidden', value=sessionId)
 

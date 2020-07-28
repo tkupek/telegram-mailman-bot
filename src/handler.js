@@ -1,4 +1,3 @@
-const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
 
 const mailman = require('./mailman');
@@ -16,6 +15,7 @@ const handler = {
 		bot.start(handler.start);
 		bot.help(handler.help);
 		bot.command('setup', handler.setup);
+		bot.command('setupTest', handler.setupTest);
 		bot.command('reset', handler.reset);
 		bot.command('update', handler.update);
 		bot.command('accept', handler.accept);
@@ -36,9 +36,19 @@ const handler = {
 	help: function(ctx) {
 		ctx.reply(tm.getMessage('HELP'));
 	},
-	setup: async function(ctx, next) {
+	setup: async function(ctx) {
+	    await data.setupInit.delete(ctx.chat.id);
+		const newSetupToken = setupController.getNewSetupHash(ctx.chat.id);
+		const tokenUrl = process.env.BASE_URL + "/setup?id=" + newSetupToken;
 		await data.openDecisions.delete(ctx.chat.id);
-		await data.mailmanConnections.set(ctx.message.chat.id, credentials);
+
+		await data.setupInit.set(ctx.chat.id, newSetupToken, new Date());
+
+		return ctx.reply(tm.getMessage('SETUP_NEW', [tokenUrl]));
+	},
+	setupTest: async function(ctx, next) {
+		await data.openDecisions.delete(ctx.chat.id);
+		await data.mailmanConnections.set(ctx.message.chat.id, credentials);	// FIXME: warum hier ctx.message.chat.id?
 
 		return await handler.check(ctx, next, true);
 	},
@@ -76,7 +86,7 @@ const handler = {
 			return ctx.reply(tm.getMessage('NOT_INITIALIZED'), Markup.removeKeyboard().extra());
 		}
 
-		let result = await mailman.checkConnection(connection);
+		let result = await mailman.checkVersion(connection);
 		if(result instanceof Error) {
 			return ctx.reply(tm.getMessage('CONNECTION_CHECK_FAIL'), Markup.removeKeyboard().extra());
 		}
