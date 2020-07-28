@@ -23,7 +23,8 @@ const app = express();
 
 app.get('/', async (req, res) => {
 	let num_connections = await data.mailmanConnections.count();
- 	res.send('The Telegram MailmanModeratorBot is up and running.<br/><br/>' + String(num_connections) + ' connection' + (num_connections == 1 ? '' : 's') + ' monitored.');
+ 	const compiledSetup = pug.compileFile(__dirname + '/resources/status.pug');
+	res.send(compiledSetup({connections: 1}));
 });
 app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 app.get('/_ah/stop', async (req, res) => {
@@ -41,12 +42,11 @@ app.get('/_ah/start', async (req, res) => {
 app.get("/setup", [
 	query('id').isHash('sha1')
 ], function (req, res) {
-	console.log("validating ...")
+	let session_id = null;
 	const validationError = validationResult(req);
-	if(!validationError.isEmpty()) {
-		return res.status(401).send('Missing or invalid session id ...');
+	if(validationError.isEmpty()) {
+		session_id = req.query.id;
 	}
-
 	const compiledSetup = pug.compileFile(__dirname + '/resources/setup.pug');
 	res.send(compiledSetup({sessionId: req.query.id}));
 });
@@ -66,6 +66,6 @@ app.post('/setup', urlencodedParser, [
 	console.log(req.body)
 });
 
-app.listen(process.env.PORT, () => {
-	console.log('webserver initialized and listening...');
+app.listen(80, () => {
+	console.log('webserver initialized and listening on port [' + process.env.PORT + ']');
 });

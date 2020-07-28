@@ -1,256 +1,258 @@
-body {
-    background: #222222;
-    font-family: Verdana, sans-serif;
-    font-size: small;
-    margin: 8px 0 16px;
-    text-align: center;
+/**
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+html, body {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.mdl-demo .mdl-layout__header-row {
+  padding-left: 40px;
+}
+.mdl-demo .mdl-layout.is-small-screen .mdl-layout__header-row h3 {
+  font-size: inherit;
+}
+.mdl-demo .mdl-layout__tab-bar-button {
+  display: none;
+}
+.mdl-demo .mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
+  display: none;
+}
+.mdl-demo .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar,
+.mdl-demo .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar-container {
+  overflow: visible;
+}
+.mdl-demo .mdl-layout__tab-bar-container {
+  height: 64px;
+}
+.mdl-demo .mdl-layout__tab-bar {
+  padding: 0;
+  padding-left: 16px;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+}
+.mdl-demo .mdl-layout__tab-bar .mdl-layout__tab {
+  height: 64px;
+  line-height: 64px;
+}
+.mdl-demo .mdl-layout__tab-bar .mdl-layout__tab.is-active::after {
+  background-color: white;
+  height: 4px;
+}
+.mdl-demo main > .mdl-layout__tab-panel {
+  padding: 8px;
+  padding-top: 48px;
+}
+.mdl-demo .mdl-card {
+  height: auto;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.mdl-demo .mdl-card > * {
+  height: auto;
+}
+.mdl-demo .mdl-card .mdl-card__supporting-text {
+  margin: 40px;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  padding: 0;
+  color: inherit;
+  width: calc(100% - 80px);
+}
+.mdl-demo.mdl-demo .mdl-card__supporting-text h4 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.mdl-demo .mdl-card__actions {
+  margin: 0;
+  padding: 4px 40px;
+  color: inherit;
+}
+.mdl-demo .mdl-card__actions a {
+  color: #00BCD4;
+  margin: 0;
+}
+.mdl-demo .mdl-card__actions a:hover,
+.mdl-demo .mdl-card__actions a:active {
+  color: inherit;
+  background-color: transparent;
+}
+.mdl-demo .mdl-card__supporting-text + .mdl-card__actions {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+.mdl-demo #add {
+  position: absolute;
+  right: 40px;
+  top: 36px;
+  z-index: 999;
 }
 
-#form_container {
-    background: #fff;
-    padding: 10px;
-    margin: 10px auto;
-    text-align: left;
-    width: 640px;
+.mdl-demo .mdl-layout__content section:not(:last-of-type) {
+  position: relative;
+  margin-bottom: 48px;
 }
-
-#top {
-    display: block;
-    height: 10px;
-    margin: 10px auto 0;
-    width: 650px;
+.mdl-demo section.section--center {
+  max-width: 860px;
 }
-
-#footer {
-    width: 640px;
-    clear: both;
-    color: #999999;
-    text-align: center;
-    padding-bottom: 15px;
-    font-size: 85%;
+.mdl-demo #features section.section--center {
+  max-width: 620px;
 }
-
-#footer a {
-    color: #999999;
-    text-decoration: none;
-    border-bottom: 1px dotted #999999;
+.mdl-demo section > header{
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
-
-#bottom {
-    display: block;
-    height: 10px;
-    margin: 0 auto;
-    width: 650px;
+.mdl-demo section > .section__play-btn {
+  min-height: 200px;
 }
-
-form.form-style {
-    margin: 20px 20px 0;
-    padding: 0 0 20px;
+.mdl-demo section > header > .material-icons {
+  font-size: 3rem;
 }
-
-.form-style li {
-    width: 61%;
+.mdl-demo section > button {
+  position: absolute;
+  z-index: 99;
+  top: 8px;
+  right: 8px;
 }
-
-form ul {
-    font-size: 100%;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
+.mdl-demo section .section__circle {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-flex-grow: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+  -webkit-flex-shrink: 1;
+      -ms-flex-negative: 1;
+          flex-shrink: 1;
 }
-
-form li {
-    display: block;
-    margin: 0;
-    padding: 4px 5px 2px 9px;
-    position: relative;
+.mdl-demo section .section__text {
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
+  padding-top: 8px;
 }
-
-form li:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
+.mdl-demo section .section__text h5 {
+  font-size: inherit;
+  margin: 0;
+  margin-bottom: 0.5em;
 }
-
-.buttons:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
+.mdl-demo section .section__text a {
+  text-decoration: none;
 }
-
-.buttons {
-    clear: both;
-    display: block;
-    margin-top: 10px;
+.mdl-demo section .section__circle-container > .section__circle-container__circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  margin: 8px 0;
 }
-
-* html form li {
-    height: 1%;
+.mdl-demo section.section--footer .section__circle--big {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  margin: 8px 32px;
 }
-
-* html .buttons {
-    height: 1%;
+.mdl-demo .is-small-screen section.section--footer .section__circle--big {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  margin: 8px 16px;
 }
-
-* html form li div {
-    display: inline-block;
+.mdl-demo section.section--footer {
+  padding: 64px 0;
+  margin: 0 -8px -8px -8px;
 }
-
-form li div {
-    color: #444;
-    margin: 0 4px 0 0;
-    padding: 0 0 8px;
+.mdl-demo section.section--center .section__text:not(:last-child) {
+  border-bottom: 1px solid rgba(0,0,0,.13);
 }
-
-form li span {
-    color: #444;
-    float: left;
-    margin: 0 4px 0 0;
-    padding: 0 0 8px;
+.mdl-demo .mdl-card .mdl-card__supporting-text > h3:first-child {
+  margin-bottom: 24px;
 }
-
-form li div.left {
-    display: inline;
-    float: left;
-    width: 48%;
+.mdl-demo .mdl-layout__tab-panel:not(#overview) {
+  background-color: white;
 }
-
-form li div.right {
-    display: inline;
-    float: right;
-    width: 48%;
+.mdl-demo #features section {
+  margin-bottom: 72px;
 }
-
-form li div.left .medium {
-    width: 100%;
+.mdl-demo #features h4, #features h5 {
+  margin-bottom: 16px;
 }
-
-form li div.right .medium {
-    width: 100%;
+.mdl-demo .toc {
+  border-left: 4px solid #C1EEF4;
+  margin: 24px;
+  padding: 0;
+  padding-left: 8px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
-
-form li div label {
-    clear: both;
-    color: #444;
-    display: block;
-    font-size: 9px;
-    line-height: 9px;
-    margin: 0;
-    padding-top: 3px;
+.mdl-demo .toc h4 {
+  font-size: 0.9rem;
+  margin-top: 0;
 }
-
-form li span label {
-    clear: both;
-    color: #444;
-    display: block;
-    font-size: 9px;
-    line-height: 9px;
-    margin: 0;
-    padding-top: 3px;
+.mdl-demo .toc a {
+  color: #4DD0E1;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 28px;
+  display: block;
 }
-
-form li .datepicker {
-    cursor: pointer !important;
-    float: left;
-    height: 16px;
-    margin: .1em 5px 0 0;
-    padding: 0;
-    width: 16px;
+.mdl-demo .mdl-menu__container {
+  z-index: 99;
 }
-
-.form_description {
-    border-bottom: 1px dotted #ccc;
-    clear: both;
-    display: inline-block;
-    margin: 0 0 1em;
+.hide {
+  display: none;
 }
-
-.form_description[class] {
-    display: block;
+td, th{
+  text-align: left !important;
 }
-
-.form_description h2 {
-    clear: left;
-    font-size: 160%;
-    font-weight: 400;
-    margin: 0 0 3px;
+.warning {
+  color: rgb(33,150,243);
+  font-size: 20px;
+  font-weight: 300;
 }
-
-.form_description p {
-    font-size: 95%;
-    line-height: 130%;
-    margin: 0 0 12px;
+.error {
+  color: rgb(213,0,0);
+  font-size: 16px;
+  font-weight: 300;
 }
-
-form hr {
-    display: none;
-}
-
-form li.section_break {
-    border-top: 1px dotted #ccc;
-    margin-top: 9px;
-    padding-bottom: 0;
-    padding-left: 9px;
-    padding-top: 13px;
-    width: 97% !important;
-}
-
-form ul li.first {
-    border-top: none !important;
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}
-
-form .section_break h3 {
-    font-size: 110%;
-    font-weight: 400;
-    line-height: 130%;
-    margin: 0 0 2px;
-}
-
-form .section_break p {
-    font-size: 85%;
-
-    margin: 0 0 10px;
-}
-
-input {
-    width: 100%;
-}
-
-input.button_text {
-    overflow: visible;
-    padding: 0 7px;
-    width: auto;
-}
-
-.buttons input {
-    font-size: 120%;
-    margin-right: 5px;
-}
-
-label.description {
-    border: none;
-    color: #222;
-    display: block;
-    font-size: 95%;
-    font-weight: 700;
-    line-height: 150%;
-    padding: 0 0 1px;
-}
-
-input.text {
-    border-bottom: 1px solid #ddd;
-    border-left: 1px solid #c3c3c3;
-    border-right: 1px solid #c3c3c3;
-    border-top: 1px solid #7c7c7c;
-    color: #333;
-    font-size: 100%;
-    margin: 0;
-    padding: 3px 0;
+i { vertical-align: middle !important; }
+.mdl-textfield {
+  width: 305px !important;
 }
