@@ -35,9 +35,13 @@ html(lang='en')
 								div(id='input')
 
 									div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-										input(class='mdl-textfield__input', type='text', pattern='https:\/\/.{1,}\..{2,}', id='url')
+										input(class='mdl-textfield__input', type='text', placeholder='https://lists.example.org', pattern='https:\/\/.{1,}\..{2,}', id='url')
 										label(class='mdl-textfield__label', for='host') API URL (https://lists.example.org/api/3.1)
 										span(class='mdl-textfield__error', for='host') Input is not a valid HTTPS URL!
+									br
+									div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+										input(class='mdl-textfield__input', type='text', id='lists', placeholder='^foo@lists.example.org$|bar@lists.example.org$')
+										label(class='mdl-textfield__label', for='lists') Lists (regex matching - enter '*' to select all lists)
 									br
 									div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
 										input(class='mdl-textfield__input', type='text', id='username')

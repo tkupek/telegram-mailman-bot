@@ -52,9 +52,10 @@ app.get("/setup", [
 });
 app.post('/setup', urlencodedParser, [
 	body('session').isHash('sha1'),
+	body('host').isURL({protocols: ['http', 'https']}),
+	body('lists').isString(),
 	body('username').isString(),
 	body('password').isString(),
-	body('host').isURL({protocols: ['http', 'https']}),
 	body('xAuthHeader').isString()
 ], function (req, res) {
 	const validationError = validationResult(req);
