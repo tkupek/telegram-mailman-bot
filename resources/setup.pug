@@ -17,41 +17,41 @@ block content
 						p To connect the bot to your Mailman API, fill out the connection parameters below.
 						p For a detailed description of parameters and expected inputs, check the #[a(href='https://github.com/tkupek/telegram-mailman-bot') documentation.]
 
-						div(class='hide' id='success')
+						div#success(class='hide')
 							br
 							p(class='warning') #[i(class="material-icons") check_circle_outline] Connection checked and saved. Your bot is connected.
 							p You can leave this page now.
 
-						div(id='input')
+						div#input
 
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input(class='mdl-textfield__input', type='text', placeholder='https://lists.example.org', pattern='https:\/\/.{1,}\..{2,}', id='url')
+								input#url(class='mdl-textfield__input', type='text', placeholder='https://lists.example.org', pattern='https:\/\/.{1,}\..{2,}')
 								label(class='mdl-textfield__label', for='host') API URL (https://lists.example.org/api/3.1)
 								span(class='mdl-textfield__error', for='host') Input is not a valid HTTPS URL!
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input(class='mdl-textfield__input', type='text', id='lists', placeholder='^foo@lists.example.org$|bar@lists.example.org$')
+								input#lists(class='mdl-textfield__input', type='text', placeholder='^foo@lists.example.org$|bar@lists.example.org$')
 								label(class='mdl-textfield__label', for='lists') Lists (regex matching - enter '*' to select all lists)
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input(class='mdl-textfield__input', type='text', id='username')
+								input#username(class='mdl-textfield__input', type='text')
 								label(class='mdl-textfield__label', for='username') Username
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input(class='mdl-textfield__input', type='password', id='password')
+								input#password(class='mdl-textfield__input', type='password')
 								label(class='mdl-textfield__label', for='password') Password
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input(class='mdl-textfield__input', type='text', pattern='\{.*\}', id='header')
+								input#header(class='mdl-textfield__input', type='text', pattern='\{.*\}')
 								label(class='mdl-textfield__label', for='header') X-Auth Header (optional)
 								span(class='mdl-textfield__error', for='host') Input is not a valid Header!
 							br
-							div(class='hidden', id='sessionId' value=sessionId)
+							div#sessionId(class='hidden', value=sessionId)
 
-							div(id='failed')
+							div#failed
 							br
-							p(class='error hide' id='error') #[i(class="material-icons") warning] Connection failed. Please check parameters and mailman config.
+							p#error(class='error hide') #[i(class="material-icons") warning] Connection failed. Please check parameters and mailman config.
 
-							button(class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' id='submit') Submit
+							button#submit(class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect') Submit
 							br
 							br
 
