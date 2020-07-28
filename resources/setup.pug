@@ -1,80 +1,69 @@
-doctype html
-html(lang='en')
-	head
-		meta(charset='UTF-8')
-		title Telegram Mailman Moderator Bot
-		link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en')
-		link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
-		link(rel='stylesheet', href='https://code.getmdl.io/1.3.0/material.light_blue-green.min.css')
-		style
-			include style.css
+extends layout.pug
 
-	body(class='mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base')
-		div(class='mdl-layout mdl-js-layout')
-			- var id = 'setup';
-			include includes/header.pug
-			main(class='mdl-layout__content')
-				div(class='mdl-layout__tab-panel is-active')
-					section(class='section--center mdl-grid mdl-grid--no-spacing')
-						div(class='mdl-cell mdl-cell--12-col')
-							h4 Setup Mailman Connection
+block content
+	- var id = 'setup';
+	include includes/header.pug
+	main(class='mdl-layout__content')
+		div(class='mdl-layout__tab-panel is-active')
+			section(class='section--center mdl-grid mdl-grid--no-spacing')
+				div(class='mdl-cell mdl-cell--12-col')
+					h4 Setup Mailman Connection
 
-							if !sessionId
-								p To setup the bot, open Telegram and call /setup.
-								br
-								br
-							else
-								p To connect the bot to your Mailman API, fill out the connection parameters below.
-								p For a detailed description of parameters and expected inputs, check the #[a(href='https://github.com/tkupek/telegram-mailman-bot') documentation.]
+					if !sessionId
+						p To setup the bot, open Telegram and call /setup.
+						br
+						br
+					else
+						p To connect the bot to your Mailman API, fill out the connection parameters below.
+						p For a detailed description of parameters and expected inputs, check the #[a(href='https://github.com/tkupek/telegram-mailman-bot') documentation.]
 
-								div(class='hide' id='success')
-									br
-									p(class='warning') #[i(class="material-icons") check_circle_outline] Connection checked and saved. Your bot is connected.
-									p You can leave this page now.
+						div(class='hide' id='success')
+							br
+							p(class='warning') #[i(class="material-icons") check_circle_outline] Connection checked and saved. Your bot is connected.
+							p You can leave this page now.
 
-								div(id='input')
+						div(id='input')
 
-									div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-										input(class='mdl-textfield__input', type='text', placeholder='https://lists.example.org', pattern='https:\/\/.{1,}\..{2,}', id='url')
-										label(class='mdl-textfield__label', for='host') API URL (https://lists.example.org/api/3.1)
-										span(class='mdl-textfield__error', for='host') Input is not a valid HTTPS URL!
-									br
-									div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-										input(class='mdl-textfield__input', type='text', id='lists', placeholder='^foo@lists.example.org$|bar@lists.example.org$')
-										label(class='mdl-textfield__label', for='lists') Lists (regex matching - enter '*' to select all lists)
-									br
-									div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-										input(class='mdl-textfield__input', type='text', id='username')
-										label(class='mdl-textfield__label', for='username') Username
-									div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-										input(class='mdl-textfield__input', type='password', id='password')
-										label(class='mdl-textfield__label', for='password') Password
-									br
-									div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-										input(class='mdl-textfield__input', type='text', pattern='\{.*\}', id='header')
-										label(class='mdl-textfield__label', for='header') X-Auth Header (optional)
-										span(class='mdl-textfield__error', for='host') Input is not a valid Header!
-									br
-									div(class='hidden', id='sessionId' value=sessionId)
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input(class='mdl-textfield__input', type='text', placeholder='https://lists.example.org', pattern='https:\/\/.{1,}\..{2,}', id='url')
+								label(class='mdl-textfield__label', for='host') API URL (https://lists.example.org/api/3.1)
+								span(class='mdl-textfield__error', for='host') Input is not a valid HTTPS URL!
+							br
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input(class='mdl-textfield__input', type='text', id='lists', placeholder='^foo@lists.example.org$|bar@lists.example.org$')
+								label(class='mdl-textfield__label', for='lists') Lists (regex matching - enter '*' to select all lists)
+							br
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input(class='mdl-textfield__input', type='text', id='username')
+								label(class='mdl-textfield__label', for='username') Username
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input(class='mdl-textfield__input', type='password', id='password')
+								label(class='mdl-textfield__label', for='password') Password
+							br
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input(class='mdl-textfield__input', type='text', pattern='\{.*\}', id='header')
+								label(class='mdl-textfield__label', for='header') X-Auth Header (optional)
+								span(class='mdl-textfield__error', for='host') Input is not a valid Header!
+							br
+							div(class='hidden', id='sessionId' value=sessionId)
 
-									div(id='failed')
-									br
-									p(class='error hide' id='error') #[i(class="material-icons") warning] Connection failed. Please check parameters and mailman config.
+							div(id='failed')
+							br
+							p(class='error hide' id='error') #[i(class="material-icons") warning] Connection failed. Please check parameters and mailman config.
 
-									button(class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' id='submit') Submit
-									br
-									br
+							button(class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' id='submit') Submit
+							br
+							br
 
-		script(src='https://code.getmdl.io/1.3.0/material.min.js')
-		script.
-			// TODO code AJAX post
+block footerscripts
+	script.
+		// TODO code AJAX post
+		let success = function() {
+			document.getElementById('input').classList.add("hide");
+			document.getElementById('error').classList.add("hide");
+			document.getElementById('success').classList.remove("hide");
+		};
 
-			let success = function() {
-				document.getElementById('input').classList.add("hide");
-				document.getElementById('error').classList.add("hide");
-				document.getElementById('success').classList.remove("hide");
-			};
-
-			let error = function() {
-				document.getElementById('error').classList.remove("hide");
-			};
+		let error = function() {
+			document.getElementById('error').classList.remove("hide");
+		};
