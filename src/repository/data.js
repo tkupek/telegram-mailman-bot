@@ -1,4 +1,4 @@
-const {Datastore} = require('@google-cloud/datastore');
+const { Datastore } = require('@google-cloud/datastore');
 
 const datastore = new Datastore();
 
@@ -45,6 +45,7 @@ async function query(query) {
 	}
 }
 
+// TODO: export to a model class
 const data = {
 	mailmanConnections: {
 		get: function(id) {

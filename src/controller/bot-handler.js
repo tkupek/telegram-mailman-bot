@@ -1,27 +1,26 @@
-const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
 
-const mailman = require('./mailman');
-const tm = require('./translationManager');
+const mailman = require('../remote/mailman-client');
+const tm = require('../utils/translation-manager');
 const credentials = require('../config/credentials');
 
 let data;
 let bot;
 
-const handler = {
+const botHandler = {
 	init: function(botmodule, datamodule) {
 		data = datamodule;
 		bot = botmodule;
 
-		bot.start(handler.start);
-		bot.help(handler.help);
-		bot.command('setup', handler.setup);
-		bot.command('reset', handler.reset);
-		bot.command('update', handler.update);
-		bot.command('accept', handler.accept);
-		bot.command('discard', handler.discard);
-		bot.command('reject', handler.reject);
-		bot.command('check', handler.check);
+		bot.start(botHandler.start);
+		bot.help(botHandler.help);
+		bot.command('setup', botHandler.setup);
+		bot.command('reset', botHandler.reset);
+		bot.command('update', botHandler.update);
+		bot.command('accept', botHandler.accept);
+		bot.command('discard', botHandler.discard);
+		bot.command('reject', botHandler.reject);
+		bot.command('check', botHandler.check);
 		console.log('bot initialized...')
 	},
 	start: async function(ctx) {
@@ -40,7 +39,7 @@ const handler = {
 		await data.openDecisions.delete(ctx.chat.id);
 		await data.mailmanConnections.set(ctx.message.chat.id, credentials);
 
-		return await handler.check(ctx, next, true);
+		return await botHandler.check(ctx, next, true);
 	},
 	reset: async function(ctx) {
 		await data.mailmanConnections.delete(ctx.chat.id);
@@ -121,13 +120,13 @@ const handler = {
 		});
 	},
 	accept: async function(ctx) {
-		return await handler.decide(ctx, mailman.actions.accept);
+		return await botHandler.decide(ctx, mailman.actions.accept);
 	},
 	discard: async function(ctx) {
-		return await handler.decide(ctx, mailman.actions.discard);
+		return await botHandler.decide(ctx, mailman.actions.discard);
 	},
 	reject: async function(ctx) {
-		return await handler.decide(ctx, mailman.actions.reject);
+		return await botHandler.decide(ctx, mailman.actions.reject);
 	},
 	decide: async function(ctx, action) {
 		let connection = await data.mailmanConnections.get(ctx.chat.id);
@@ -147,11 +146,11 @@ const handler = {
 		await data.openDecisions.delete(ctx.chat.id);
 
 		setTimeout(function () {
-			handler.update_all(ctx.chat.id);
+			botHandler.update_all(ctx.chat.id);
 		}, 3000)
 
 		return ctx.reply(tm.getMessage('MODERATION_SUCCESS', [action]), Markup.removeKeyboard().extra());
 	}
 };
 
-module.exports = handler;
+module.exports = botHandler;
