@@ -58,7 +58,13 @@ app.get("/setup", [
 app.post('/setup', urlencodedParser, [
 	body(setupFields.sessionId).isHash(setupFields.sessionIdHash),
 	body(setupFields.url).isURL({protocols: ['https']}),
-	body(setupFields.listsRegex).isString(),
+	body(setupFields.listsRegex).isString().customSanitizer(value => {
+		if(value === "*") { return ".*" } else { return value }
+	}).custom(value => {
+		try { RegExp(value);
+		} catch (syntaxError) { return false; }
+		return true;
+	}),
 	body(setupFields.username).isString(),
 	body(setupFields.password).isString(),
 	body(setupFields.xAuthHeader).isString()
@@ -87,6 +93,7 @@ app.post('/setup', urlencodedParser, [
 			console.log("Setup successful for:")
 		} else {
 			responseCode = 500;
+			errorResponseArray = []
 			console.log("Setup unsuccessful for:")
 		}
 		console.log(data)
@@ -98,6 +105,6 @@ app.post('/setup', urlencodedParser, [
 	res.status(responseCode).json({ "errors": errorResponseArray});
 });
 
-app.listen(8080, () => {
+app.listen(process.env.PORT, () => {
 	console.log('webserver initialized and listening on port [' + process.env.PORT + ']');
 });

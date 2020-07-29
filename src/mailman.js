@@ -3,8 +3,10 @@ const axios = require('axios');
 const mailman = {
 	getHeldMails: async function(connection) {
 		// checks all lists in connection and returns the first open mail
-		for (let list of connection.lists) {
-			heldMail = mailman.getHeldMail(connection, list);
+		const selectedLists = await this.getSelectedLists(connection);
+
+		for (let list of selectedLists) {
+			heldMail = mailman.getHeldMail(connection, list.address);
 			if(heldMail) {
 				return heldMail;
 			}
@@ -50,7 +52,7 @@ const mailman = {
 			let response = await axios.get(connection.url + '/system', this.getAuthConfig(connection));
 			return response.status;
 		} catch (error) {
-			console.error(error);
+			console.error("Check connection with url " + connection.url + "failed.");
 			return 499;
 		}
 	},
@@ -77,6 +79,44 @@ const mailman = {
 			},
 			headers: connection.headers
 		};
+	},
+	getAllLists: async function (connection) {
+		try {
+			const response = await axios.get(connection.url + '/lists', this.getAuthConfig(connection));
+			let availableLists = [];
+
+			response.data.entries.forEach(item => {
+				availableLists.push({
+					"name": item.list_name,
+					"domain": item.mail_host,
+					"address": item.fqdn_listname,
+					"mailman_id": item.list_id,
+					"description": item.description,
+					"subscribers": item.member_count
+				});
+			});
+
+			return availableLists;
+		} catch (error) {
+			console.error(error);
+			return {};
+		}
+	},
+	getSelectedLists: async function(connection) {
+		try {
+			const allLists = await this.getAllLists(connection);
+			let selectedLists = [];
+
+			allLists.forEach(item => {
+				if(item.address.match(connection.lists)) {
+					selectedLists.push(item);
+				}
+			});
+
+			return selectedLists;
+		} catch (error) {
+
+		}
 	}
 };
 

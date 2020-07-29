@@ -6,9 +6,10 @@ const SetupError = require("./setup-error");
 const mailman = require('./mailman');
 const data = require('./data');
 
+const SESSION_MAX_AGE_IN_HOURS = 12;
+
 const SALT_BYTE_LENGTH = 64;
 const HASH_ENCODING = 'hex';
-const SESSION_MAX_AGE_IN_HOURS = 12;
 
 
 function saveConnection(sessionToken, connection) {
@@ -57,13 +58,6 @@ const setupController = {
                 new SetupError(setupController.setupFields.username),
                 new SetupError(setupController.setupFields.password),
                 new SetupError(setupController.setupFields.xAuthHeader)
-            ];
-        }
-
-        // TODO: add listsRegex check
-        if(false) {
-            return [
-                new SetupError(setupController.setupFields.listsRegex)
             ];
         }
 
