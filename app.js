@@ -92,7 +92,7 @@ app.post('/setup', urlencodedParser, [
 		errorResponseArray = validationError.array();
 	}
 
-	res.status(responseCode).json({ data: data, errors:  errorResponseArray});
+	res.status(responseCode).json({ errors:  errorResponseArray});
 });
 
 app.listen(process.env.PORT, () => {
