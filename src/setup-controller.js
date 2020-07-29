@@ -58,21 +58,21 @@ const setupController = {
 
         if(connectionResult === 499) {
             return createSetupErrorArray(
-                new SetupError(setupFields.host, setupModel.host)
+                new SetupError(setupFields.host)
             );
         }
         if(connectionResult === 401) {
             return createSetupErrorArray(
-                new SetupError(setupFields.username, setupModel.username),
-                new SetupError(setupFields.password, setupModel.password),
-                new SetupError(setupFields.xAuthHeader, setupModel.xAuthHeader)
+                new SetupError(setupFields.username),
+                new SetupError(setupFields.password),
+                new SetupError(setupFields.xAuthHeader)
             );
         }
 
         // TODO: add listsRegex check
         if(false) {
             return createSetupErrorArray(
-                new SetupError(setupFields.listsRegex, setupModel.listsRegex)
+                new SetupError(setupFields.listsRegex)
             );
         }
 
