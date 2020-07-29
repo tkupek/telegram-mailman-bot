@@ -54,16 +54,16 @@ const setupController = {
         }
         if(connectionResult === 401) {
             return [
-                new SetupError(setupController.setupFields.username, setupModel.username),
-                new SetupError(setupController.setupFields.password, setupModel.password),
-                new SetupError(setupController.setupFields.xAuthHeader, setupModel.xAuthHeader)
+                new SetupError(setupController.setupFields.username),
+                new SetupError(setupController.setupFields.password),
+                new SetupError(setupController.setupFields.xAuthHeader)
             ];
         }
 
         // TODO: add listsRegex check
         if(false) {
             return [
-                new SetupError(setupController.setupFields.listsRegex, setupModel.listsRegex)
+                new SetupError(setupController.setupFields.listsRegex)
             ];
         }
 

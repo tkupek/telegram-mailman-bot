@@ -1,9 +1,8 @@
 'use strict';
 
 class SetupError {
-    constructor(param, value) {
+    constructor(param) {
         this.param = param;
-        this.value = value;
         this.msg = 'Incorrect value';
         this.location = 'body';
     }

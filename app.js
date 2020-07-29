@@ -57,7 +57,11 @@ app.get("/setup", [
 });
 app.post('/setup', urlencodedParser, [
 	body(setupFields.sessionId).isHash(setupFields.sessionIdHash),
+<<<<<<< HEAD
 	body(setupFields.url).isURL({protocols: ['http', 'https']}),
+=======
+	body(setupFields.host).isURL({protocols: ['https']}),
+>>>>>>> e7301cc69364ef059f1a2128ad56a4ab8c929487
 	body(setupFields.listsRegex).isString(),
 	body(setupFields.username).isString(),
 	body(setupFields.password).isString(),
