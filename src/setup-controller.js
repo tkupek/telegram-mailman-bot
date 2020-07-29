@@ -4,7 +4,7 @@ const crypto = require('crypto');
 
 const SetupError = require("./setup-error");
 const mailman = require('./mailman');
-const data = require('./src/data');
+const data = require('./data');
 
 const SALT_BYTE_LENGTH = 64;
 const HASH_ENCODING = 'hex';

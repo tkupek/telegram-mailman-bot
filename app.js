@@ -20,14 +20,16 @@ cron.schedule('*/1 * * * *', function() {
 	handler.update_all();
 });
 
+const renderStatusPage = pug.compileFile(__dirname + '/resources/status.pug');
+const renderSetupPage = pug.compileFile(__dirname + '/resources/setup.pug');
+
 
 // Start Webserver
 const app = express();
 
 app.get('/', async (req, res) => {
 	let num_connections = await data.mailmanConnections.count();
- 	const compiledSetup = pug.compileFile(__dirname + '/resources/status.pug');
-	res.send(compiledSetup({connections: num_connections}));
+	res.send(renderStatusPage({connections: num_connections}));
 });
 app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 app.get('/_ah/stop', async (req, res) => {
@@ -51,8 +53,7 @@ app.get("/setup", [
 	if(validationError.isEmpty()) {
 		session_id = req.query.id;
 	}
-	const compiledSetup = pug.compileFile(__dirname + '/resources/setup.pug');
-	res.send(compiledSetup({sessionId: session_id}));
+	res.send(renderSetupPage({sessionId: session_id}));
 });
 app.post('/setup', urlencodedParser, [
 	body(setupFields.sessionId).isHash(setupFields.sessionIdHash),
