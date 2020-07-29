@@ -63,7 +63,10 @@ app.post('/setup', urlencodedParser, [
 	body(setupFields.password).isString(),
 	body(setupFields.xAuthHeader).isString()
 ], async (req, res) => {
-	const validationError = validationResult(req);
+	const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
+		return { "msg": msg, "param": param, "location": location }
+	};
+	const validationError = validationResult(req).formatWith(errorFormatter);
 	const data = req.body;
 	let responseCode;
 	let errorResponseArray;
@@ -95,6 +98,6 @@ app.post('/setup', urlencodedParser, [
 	res.status(responseCode).json({ "errors": errorResponseArray});
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(8080, () => {
 	console.log('webserver initialized and listening on port [' + process.env.PORT + ']');
 });
