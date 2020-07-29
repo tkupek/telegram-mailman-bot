@@ -15,13 +15,7 @@ const mailman = {
 		// check list for open mails and returns the first open mail
 		let response;
 		try {
-			response = await axios.get(connection.url + '/lists/' + list + '/held', {
-				auth: {
-					username: connection.name,
-					password: connection.password
-				},
-				headers: connection.headers
-			});
+			response = await axios.get(connection.url + '/lists/' + list + '/held', this.getAuthConfig(connection));
 		} catch (error) {
 		    console.error(error);
 		    return error;
@@ -42,30 +36,27 @@ const mailman = {
 
 		return; // TODO find more elegant solution
 	},
-	checkConnection: async function(connection) {
+	checkVersion: async function(connection) {
 		try {
-			let response = await axios.get(connection.url + '/system/versions', {
-				auth: {
-					username: connection.name,
-					password: connection.password
-				},
-				headers: connection.headers
-			});
+			let response = await axios.get(connection.url + '/system/versions', this.getAuthConfig(connection));
 			return response.data.mailman_version;
 		} catch (error) {
 		    console.error(error);
 		    return error;
 		}
 	},
+	checkConnection: async function(connection) {
+		try {
+			let response = await axios.get(connection.url + '/system', this.getAuthConfig(connection));
+			return response.status;
+		} catch (error) {
+			console.error(error);
+			return 499;
+		}
+	},
 	moderateMail: async function(connection, list, request_id, action) {
 		try {
-			await axios.post(connection.url + '/lists/' + list + '/held/' + request_id, { 'action': action }, {
-				auth: {
-					username: connection.name,
-					password: connection.password
-				},
-				headers: connection.headers
-			});
+			await axios.post(connection.url + '/lists/' + list + '/held/' + request_id, { 'action': action }, this.getAuthConfig(connection));
 		} catch (error) {
 		    console.error(error);
 		    return error;
@@ -77,7 +68,16 @@ const mailman = {
 		accept: 'accept',
 		discard: 'discard',
 		reject: 'reject'
-	})
+	}),
+	getAuthConfig: function (connection) {
+		return {
+			auth: {
+				username: connection.name,
+				password: connection.password
+			},
+			headers: connection.headers
+		};
+	}
 };
 
 module.exports = mailman;

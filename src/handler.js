@@ -1,9 +1,7 @@
-const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
 
 const mailman = require('./mailman');
 const tm = require('./translationManager');
-const credentials = require('../config/credentials');
 
 let data;
 let bot;
@@ -38,15 +36,14 @@ const handler = {
 	},
 	setup: async function(ctx, next) {
 		// TODO, catch already connected sessions
-		
+	    await data.setupInit.delete(ctx.chat.id);
+		const newSetupToken = setupController.getNewSetupHash(ctx.chat.id);
+		const tokenUrl = process.env.BASE_URL + "/setup?id=" + newSetupToken;
+
 		await data.openDecisions.delete(ctx.chat.id);
-		await data.mailmanConnections.set(ctx.message.chat.id, credentials);
+		await data.setupInit.set(ctx.chat.id, newSetupToken, new Date());
 
-		let authId = await data.authLink.create(ctx.chat.id);
-		// TODO, read URL from env variables
-		let url = 'https://mailman-moderator-bot.ey.r.appspot.com/setup?id=' + authId;
-
-		return ctx.reply(tm.getMessage('SETUP', [url]))
+		return ctx.reply(tm.getMessage('SETUP_NEW', [tokenUrl]));
 	},
 	reset: async function(ctx) {
 		await data.mailmanConnections.delete(ctx.chat.id);
@@ -82,7 +79,7 @@ const handler = {
 			return ctx.reply(tm.getMessage('NOT_INITIALIZED'), Markup.removeKeyboard().extra());
 		}
 
-		let result = await mailman.checkConnection(connection);
+		let result = await mailman.checkVersion(connection);
 		if(result instanceof Error) {
 			return ctx.reply(tm.getMessage('CONNECTION_CHECK_FAIL'), Markup.removeKeyboard().extra());
 		}
