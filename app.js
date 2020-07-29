@@ -67,6 +67,6 @@ app.post('/setup', urlencodedParser, [
 	console.log(req.body)
 });
 
-app.listen(80, () => {
+app.listen(process.env.PORT, () => {
 	console.log('webserver initialized and listening on port [' + process.env.PORT + ']');
 });

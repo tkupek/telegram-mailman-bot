@@ -37,10 +37,16 @@ const handler = {
 		ctx.reply(tm.getMessage('HELP'));
 	},
 	setup: async function(ctx, next) {
+		// TODO, catch already connected sessions
+		
 		await data.openDecisions.delete(ctx.chat.id);
 		await data.mailmanConnections.set(ctx.message.chat.id, credentials);
 
-		return await handler.check(ctx, next, true);
+		let authId = await data.authLink.create(ctx.chat.id);
+		// TODO, read URL from env variables
+		let url = 'https://mailman-moderator-bot.ey.r.appspot.com/setup?id=' + authId;
+
+		return ctx.reply(tm.getMessage('SETUP', [url]))
 	},
 	reset: async function(ctx) {
 		await data.mailmanConnections.delete(ctx.chat.id);
@@ -70,7 +76,7 @@ const handler = {
 		    .resize()
 		    .extra());
 	},
-	check: async function(ctx, next, was_setup) {
+	check: async function(ctx, next) {
 		let connection = await data.mailmanConnections.get(ctx.chat.id);
 		if(!connection) {
 			return ctx.reply(tm.getMessage('NOT_INITIALIZED'), Markup.removeKeyboard().extra());
@@ -82,10 +88,6 @@ const handler = {
 		}
 
 		let message = tm.getMessage('CONNECTION_CHECK_SUCCESS', [result]);
-		if(was_setup) {
-			message += tm.getMessage('SETUP_SUCCESSFUL');
-			return ctx.reply(message, [result], Markup.removeKeyboard().extra());
-		}
 		return ctx.reply(message);
 	},
 	update_all: async function(client_id) {

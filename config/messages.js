@@ -15,7 +15,8 @@ const messages = {
         'DECISION_FAILED': 'Something went wrong while moderating mail. Check your connection settings.',
         'KEYBOARD_DECISION': ['/accept ✅', '/reject ↩️', '/discard ❌'],
         'NO_DECISION': 'No open decision. Call /update to check new mails.',
-        'MODERATION_SUCCESS': 'Moderation successful. Decision [{{0}}] was sent.'
+        'MODERATION_SUCCESS': 'Moderation successful. Decision [{{0}}] was sent.',
+        'SETUP': 'To setup your mailman connection, please open the following URL and provide your connection parameters.\n{{0}}'
     }
 }
 

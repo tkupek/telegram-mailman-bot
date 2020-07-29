@@ -1,4 +1,6 @@
 const {Datastore} = require('@google-cloud/datastore');
+var crypto = require('crypto')
+var shasum = crypto.createHash('sha1')
 
 const datastore = new Datastore();
 
@@ -51,7 +53,7 @@ const data = {
 			return get(['connection', id]);
 		},
 		set: function(id, connection) {
-			return set(['connection', id], connection)
+			return set(['connection', id], connection);
 		},
 		delete: function(id) {
 			return del(['connection', id]);
@@ -71,7 +73,22 @@ const data = {
 			return set(['decision', id], decision);
 		},
 		delete: function(id) {
-			return del(['decision', id])
+			return del(['decision', id]);
+		}
+	},
+	authLink: {
+		create: async function(id) {
+			shasum.update('TODO' + (new Date).getTime());
+			let authId = shasum.digest('hex');
+
+			await set(['auth', id], authId);
+			return authId;
+		},
+		get: function(id) {
+			return get(['auth', id]);
+		},
+		delete: function(id) {
+			return del(['auth', id]);
 		}
 	}
 };
