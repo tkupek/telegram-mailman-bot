@@ -11,16 +11,6 @@ const HASH_ENCODING = 'hex';
 const SESSION_MAX_AGE_IN_HOURS = 12;
 
 
-function createSetupErrorArray() {
-    let errors = [];
-
-    for(let i = 0; i < arguments.length; i++) {
-        errors = errors.concat(arguments[i]);
-    }
-
-    return errors;
-}
-
 function saveConnection(sessionToken, connection) {
     let maxAge = new Date();
     maxAge.setHours(maxAge.getHours() - SESSION_MAX_AGE_IN_HOURS);
@@ -28,7 +18,7 @@ function saveConnection(sessionToken, connection) {
     const chatId = data.setupInit.getId(sessionToken, maxAge);
 
     if(chatId) {
-        data.mailmanConnections(chatId, connection);
+        data.mailmanConnections.set(chatId, connection);
         data.setupInit.delete(chatId);
     }
 }
@@ -57,23 +47,24 @@ const setupController = {
         const connectionResult = await mailman.checkConnection(newConnection);
 
         if(connectionResult === 499) {
-            return createSetupErrorArray(
+            return [
                 new SetupError(setupController.setupFields.url, setupModel.url)
-            );
+            ];
+
         }
         if(connectionResult === 401) {
-            return createSetupErrorArray(
+            return [
                 new SetupError(setupController.setupFields.username, setupModel.username),
                 new SetupError(setupController.setupFields.password, setupModel.password),
                 new SetupError(setupController.setupFields.xAuthHeader, setupModel.xAuthHeader)
-            );
+            ];
         }
 
         // TODO: add listsRegex check
         if(false) {
-            return createSetupErrorArray(
+            return [
                 new SetupError(setupController.setupFields.listsRegex, setupModel.listsRegex)
-            );
+            ];
         }
 
         if(connectionResult === 200) {

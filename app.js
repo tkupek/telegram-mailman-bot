@@ -62,7 +62,7 @@ app.post('/setup', urlencodedParser, [
 	body(setupFields.username).isString(),
 	body(setupFields.password).isString(),
 	body(setupFields.xAuthHeader).isString()
-], function (req, res) {
+], async (req, res) => {
 	const validationError = validationResult(req);
 	const data = req.body;
 	let responseCode;
@@ -77,7 +77,7 @@ app.post('/setup', urlencodedParser, [
 			data.password,
 			data.xAuthHeader
 		);
-		errorResponseArray = setupController.checkAndSaveSetup(newSetupData);
+		errorResponseArray = await setupController.checkAndSaveSetup(newSetupData);
 
 		if(errorResponseArray) {
 			responseCode = 200;
@@ -92,7 +92,7 @@ app.post('/setup', urlencodedParser, [
 		errorResponseArray = validationError.array();
 	}
 
-	res.status(responseCode).json({ errors:  errorResponseArray});
+	res.status(responseCode).json({ "errors": errorResponseArray});
 });
 
 app.listen(80, () => {
