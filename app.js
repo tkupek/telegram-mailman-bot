@@ -57,7 +57,7 @@ app.get("/setup", [
 });
 app.post('/setup', urlencodedParser, [
 	body(setupFields.sessionId).isHash(setupFields.sessionIdHash),
-	body(setupFields.host).isURL({protocols: ['http', 'https']}),
+	body(setupFields.url).isURL({protocols: ['http', 'https']}),
 	body(setupFields.listsRegex).isString(),
 	body(setupFields.username).isString(),
 	body(setupFields.password).isString(),
@@ -71,7 +71,7 @@ app.post('/setup', urlencodedParser, [
 	if(validationError.isEmpty()) {
 		const newSetupData = new SetupModel(
 			data.sessionId,
-			data.host,
+			data.url,
 			data.listsRegex,
 			data.username,
 			data.password,
@@ -95,6 +95,6 @@ app.post('/setup', urlencodedParser, [
 	res.status(responseCode).json({ data: data, errors:  errorResponseArray});
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(80, () => {
 	console.log('webserver initialized and listening on port [' + process.env.PORT + ']');
 });

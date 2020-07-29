@@ -26,11 +26,11 @@ block content
 
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
 								input#url(class='mdl-textfield__input', type='text', pattern='https:\/\/.{1,}\..{2,}')
-								label(class='mdl-textfield__label', for='host') API URL (https://lists.example.org/api/3.1)
-								span(class='mdl-textfield__error', for='host') Input is not a valid HTTPS URL!
+								label(class='mdl-textfield__label', for='url') API URL (https://lists.example.org/api/3.1)
+								span(class='mdl-textfield__error', for='url') Input is not a valid HTTPS URL!
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input#listsRegex(class='mdl-textfield__input', type='text', placeholder='^foo@lists.example.org$|bar@lists.example.org$')
+								input#listsRegex(class='mdl-textfield__input', type='text')
 								label(class='mdl-textfield__label', for='listsRegex') Lists (regex matching - enter '*' to select all lists)
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
@@ -57,6 +57,7 @@ block content
 
 block footerscripts
 	script.
+		const xhttp = new XMLHttpRequest();
 		// TODO code AJAX post
 		let success = function() {
 			document.getElementById('input').classList.add("hide");
@@ -67,3 +68,23 @@ block footerscripts
 		let error = function() {
 			document.getElementById('error').classList.remove("hide");
 		};
+
+		let handleResponse = function(response) {
+			console.log(response);
+		};
+		let sendSetup = function() {
+			let parameter = '';
+
+			parameter += 'sessionId=' + document.getElementById('sessionId').getAttribute('value');
+			parameter += '&url=' + document.getElementById('url').value;
+			parameter += '&listsRegex=' + document.getElementById('listsRegex').value;
+			parameter += '&username=' + document.getElementById('username').value;
+			parameter += '&password=' + document.getElementById('password').value;
+			parameter += '&xAuthHeader=' + document.getElementById('xAuthHeader').value;
+
+			xhttp.callback = handleResponse;
+			xhttp.open('POST', '/setup', true);
+			xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			xhttp.send(parameter);
+		};
+		document.getElementById('submit').onclick = sendSetup

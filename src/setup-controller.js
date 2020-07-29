@@ -36,10 +36,10 @@ function saveConnection(sessionToken, connection) {
 
 const setupController = {
     getNewSetupHash: function(chatId) {
-        const hash = crypto.createHash(setupFields.sessionIdHash);
+        const hash = crypto.createHash(setupController.setupFields.sessionIdHash);
 
         hash.update(new Date().valueOf().toString());
-        hash.update(chatId);
+        hash.update(chatId.toString());
         hash.update(crypto.randomBytes(SALT_BYTE_LENGTH));
 
         return hash.digest(HASH_ENCODING);
@@ -47,7 +47,7 @@ const setupController = {
 
     checkAndSaveSetup: async function (setupModel) {
         const newConnection = {
-            url: setupModel.host,
+            url: setupModel.url,
             name: setupModel.username,
             password: setupModel.password,
             headers: { 'X-Auth': setupModel.xAuthHeader },
@@ -58,21 +58,21 @@ const setupController = {
 
         if(connectionResult === 499) {
             return createSetupErrorArray(
-                new SetupError(setupFields.host, setupModel.host)
+                new SetupError(setupController.setupFields.url, setupModel.url)
             );
         }
         if(connectionResult === 401) {
             return createSetupErrorArray(
-                new SetupError(setupFields.username, setupModel.username),
-                new SetupError(setupFields.password, setupModel.password),
-                new SetupError(setupFields.xAuthHeader, setupModel.xAuthHeader)
+                new SetupError(setupController.setupFields.username, setupModel.username),
+                new SetupError(setupController.setupFields.password, setupModel.password),
+                new SetupError(setupController.setupFields.xAuthHeader, setupModel.xAuthHeader)
             );
         }
 
         // TODO: add listsRegex check
         if(false) {
             return createSetupErrorArray(
-                new SetupError(setupFields.listsRegex, setupModel.listsRegex)
+                new SetupError(setupController.setupFields.listsRegex, setupModel.listsRegex)
             );
         }
 
@@ -88,7 +88,7 @@ const setupController = {
     setupFields: Object.freeze({
         sessionId: 'sessionId',
         sessionIdHash: 'sha1',
-        host: 'host',
+        url: 'url',
         listsRegex: 'listsRegex',
         username: 'username',
         password: 'password',

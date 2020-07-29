@@ -1,10 +1,4 @@
-
-const {Datastore} = require('@google-cloud/datastore');
-var crypto = require('crypto')
-var shasum = crypto.createHash('sha1')
-=======
 const { Datastore } = require('@google-cloud/datastore');
->>>>>>> 26c776be09fd4af2e177018040b1385ffeb4b663
 
 const datastore = new Datastore();
 
@@ -95,7 +89,7 @@ const data = {
 				.filter('created', '>', maxAgeDate.toISOString()));
 		},
 		set: function(id, setupToken, createdAt) {
-			return set([KEY_SETUP, id], { token: setupToken, created: createdAtDate.toISOString() });
+			return set([KEY_SETUP, id], { token: setupToken, created: createdAt.toISOString() });
 		},
 		delete: function(id) {
 			return del(['KEY_SETUP', id]);
