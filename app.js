@@ -94,7 +94,7 @@ app.post('/setup', urlencodedParser, [
 		} else {
 			responseCode = 500;
 			errorResponseArray = []
-			console.log("Setup unsuccessful for:")
+			console.error("Setup unsuccessful for:")
 		}
 		console.log(data)
 	} else {

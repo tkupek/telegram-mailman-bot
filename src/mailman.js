@@ -99,7 +99,7 @@ const mailman = {
 			return availableLists;
 		} catch (error) {
 			console.error(error);
-			return {};
+			return [];
 		}
 	},
 	getSelectedLists: async function(connection) {

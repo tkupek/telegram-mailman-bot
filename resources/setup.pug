@@ -31,7 +31,7 @@ block content
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
 								input#listsRegex(class='mdl-textfield__input', type='text')
-								label(class='mdl-textfield__label', for='listsRegex') Lists (regex matching - enter '*' to select all lists)
+								label(class='mdl-textfield__label', for='listsRegex') Lists (regex matching - enter '*' for all lists)
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
 								input#username(class='mdl-textfield__input', type='text')
@@ -72,9 +72,9 @@ block footerscripts
 		let handleResponse = function(status, response) {
 			console.log(response);
 			response = JSON.parse(response);
-			errors = response['errors'];
+			let errors = response['errors'];
 
-			if(status == 200) {
+			if(status === 200) {
 				if(Object.keys().length === 0) {
 					success();
 				} else {
@@ -85,12 +85,12 @@ block footerscripts
 				}
 			}
 
-			if(status == 400) {
+			if(status === 400) {
 				error();
 				// general parameter issue
 			}
 
-			if(status == 500) {
+			if(status === 500) {
 				error();
 				// terribly wrong
 			}
