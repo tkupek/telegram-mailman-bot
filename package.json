@@ -11,7 +11,8 @@
     "express-validator": "^6.6.0",
     "node-cron": "^2.0.3",
     "pug": "^3.0.0",
-    "telegraf": "^3.38.0"
+    "telegraf": "^3.38.0",
+    "url-join": "^4.0.1"
   },
   "devDependencies": {},
   "scripts": {
