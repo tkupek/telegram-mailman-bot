@@ -12,19 +12,6 @@ const SALT_BYTE_LENGTH = 64;
 const HASH_ENCODING = 'hex';
 
 
-function saveConnection(sessionToken, connection) {
-    let maxAge = new Date();
-    maxAge.setHours(maxAge.getHours() - SESSION_MAX_AGE_IN_HOURS);
-
-    const chatId = data.setupInit.getId(sessionToken, maxAge);
-
-    if(chatId) {
-        data.mailmanConnections.set(chatId, connection);
-        data.setupInit.delete(chatId);
-    }
-}
-
-
 const setupController = {
     getNewSetupHash: function(chatId) {
         const hash = crypto.createHash(setupController.setupFields.sessionIdHash);
@@ -37,6 +24,16 @@ const setupController = {
     },
 
     checkAndSaveSetup: async function (setupModel) {
+        let maxAge = new Date();
+        maxAge.setHours(maxAge.getHours() - SESSION_MAX_AGE_IN_HOURS);
+        let chatId = await data.setupInit.getId(setupModel.sessionId, maxAge);
+        if(!chatId) {
+            console.error('No valid chatId for token [' + setupModel.sessionId + '] found.')
+            return [
+                new SetupError(setupController.setupFields.sessionId)
+            ];
+        }
+
         const newConnection = {
             url: setupModel.url,
             name: setupModel.username,
@@ -62,7 +59,8 @@ const setupController = {
         }
 
         if(connectionResult === 200) {
-            saveConnection(setupModel.sessionId, newConnection);
+            await data.mailmanConnections.set(chatId, newConnection);
+            await data.setupInit.delete(chatId);
             return [];
         }
 

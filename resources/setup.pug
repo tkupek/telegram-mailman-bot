@@ -41,9 +41,8 @@ block content
 								label(class='mdl-textfield__label', for='password') Password
 							br
 							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
-								input#xAuthHeader(class='mdl-textfield__input', type='text', pattern='\{.*\}')
+								input#xAuthHeader(class='mdl-textfield__input', type='text')
 								label(class='mdl-textfield__label', for='xAuthHeader') X-Auth Header (optional)
-								span(class='mdl-textfield__error', for='xAuthHeader') Input is not a valid Header!
 							br
 							div#sessionId(class='hidden', value=sessionId)
 
@@ -75,7 +74,7 @@ block footerscripts
 			let errors = response['errors'];
 
 			if(status === 200) {
-				if(Object.keys().length === 0) {
+				if(errors.length === 0) {
 					success();
 				} else {
 					errors.forEach(error => {

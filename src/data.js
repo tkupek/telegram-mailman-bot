@@ -82,14 +82,18 @@ const data = {
 		get: function(id) {
 			return get([KEY_SETUP, id]);
 		},
-		getId: function(token, maxAgeDate) {
-			return query(datastore.createQuery(KEY_SETUP)
+		getId: async function(token, maxAgeDate) {
+			let result = await query(datastore.createQuery(KEY_SETUP)
 				.select('__key__')
 				.filter('token', '=', token)
-				.filter('created', '>', maxAgeDate.toISOString()));
+				.filter('created', '>', maxAgeDate));
+			if(result.length) {
+				return parseInt(result[0][0]);
+			}
+			return null;
 		},
 		set: function(id, setupToken, createdAt) {
-			return set([KEY_SETUP, id], { token: setupToken, created: createdAt.toISOString() });
+			return set([KEY_SETUP, id], { token: setupToken, created: createdAt });
 		},
 		delete: function(id) {
 			return del(['KEY_SETUP', id]);
