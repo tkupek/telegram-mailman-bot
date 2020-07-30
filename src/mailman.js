@@ -59,7 +59,7 @@ const mailman = {
 	},
 	moderateMail: async function(connection, list, request_id, action) {
 		try {
-			await axios.post(urljoin(connection.url, '/lists', list, '/held', request_id), { 'action': action }, this.getAuthConfig(connection));
+			await axios.post(urljoin(connection.url, '/lists', list, '/held', request_id.toString()), { 'action': action }, this.getAuthConfig(connection));
 		} catch (error) {
 		    console.error(error);
 		    return error;
