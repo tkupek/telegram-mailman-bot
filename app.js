@@ -16,8 +16,8 @@ const setupFields = setupController.setupFields;
 const bot = new Telegraf(process.env.BOT_TOKEN)
 handler.init(bot, data);
 
-cron.schedule('*/1 * * * *', function() {
-	handler.update_all();
+cron.schedule('*/1 * * * *', async function() {
+	await handler.update_all();
 });
 
 const renderStatusPage = pug.compileFile(__dirname + '/resources/status.pug');

@@ -60,8 +60,8 @@ const data = {
 		delete: function(id) {
 			return del([KEY_CONNECTION, id]);
 		},
-		all: function() {
-			return query(datastore.createQuery(KEY_CONNECTION));
+		all: async function() {
+			return await query(datastore.createQuery(KEY_CONNECTION));
 		},
 		count: async function() {
 			return (await query(datastore.createQuery(KEY_CONNECTION).select('__key__'))).length;

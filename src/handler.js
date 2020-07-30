@@ -95,8 +95,8 @@ const handler = {
 		} else {
 			connections = await data.mailmanConnections.all();
 		}
-		
-		connections.forEach(async ([id, connection]) => {
+
+		await Promise.all(connections.map(async ([id, connection]) => {
 			id = parseInt(id);
 			let heldMail = await mailman.getHeldMails(connection);
 			if(!heldMail) {
@@ -118,7 +118,7 @@ const handler = {
 				.oneTime()
 				.resize()
 				.extra());
-		});
+		}));
 	},
 	accept: async function(ctx) {
 		return await handler.decide(ctx, mailman.actions.accept);

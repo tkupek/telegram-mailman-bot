@@ -6,7 +6,7 @@ const mailman = {
 		const selectedLists = await this.getSelectedLists(connection);
 
 		for (let list of selectedLists) {
-			heldMail = mailman.getHeldMail(connection, list.address);
+			heldMail = await mailman.getHeldMail(connection, list.address);
 			if(heldMail) {
 				return heldMail;
 			}
@@ -115,7 +115,7 @@ const mailman = {
 
 			return selectedLists;
 		} catch (error) {
-
+			console.error(error);
 		}
 	}
 };
