@@ -117,6 +117,7 @@ const mailman = {
 			return selectedLists;
 		} catch (error) {
 			console.error(error);
+			return [];
 		}
 	}
 };

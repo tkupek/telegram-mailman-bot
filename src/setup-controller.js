@@ -5,7 +5,6 @@ const crypto = require('crypto');
 const SetupError = require("./setup-error");
 const mailman = require('./mailman');
 const data = require('./data');
-const tm = require('../config/messages');
 
 const SESSION_MAX_AGE_IN_HOURS = 12;
 
@@ -25,6 +24,7 @@ const setupController = {
     },
 
     checkAndSaveSetup: async function (setupModel, successCallback) {
+        // TODO: move save part out of this function again to make it more readable
         let maxAge = new Date();
         maxAge.setHours(maxAge.getHours() - SESSION_MAX_AGE_IN_HOURS);
         let chatId = await data.setupInit.getId(setupModel.sessionId, maxAge);
@@ -40,7 +40,8 @@ const setupController = {
             name: setupModel.username,
             password: setupModel.password,
             headers: { 'X-Auth': setupModel.xAuthHeader },
-            lists: setupModel.listsRegex
+            lists: setupModel.listsRegex,
+            created: new Date()
         };
 
         const connectionResult = await mailman.checkConnection(newConnection);
