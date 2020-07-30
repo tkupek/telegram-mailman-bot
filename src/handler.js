@@ -47,6 +47,9 @@ const handler = {
 
 		return ctx.reply(tm.getMessage('SETUP_NEW', [tokenUrl]));
 	},
+	sendSetupSuccess: function(client_id) {
+		bot.telegram.sendMessage(client_id, tm.getMessage('SETUP_SUCCESSFUL'));
+	},
 	reset: async function(ctx) {
 		await data.mailmanConnections.delete(ctx.chat.id);
 		await data.openDecisions.delete(ctx.chat.id);

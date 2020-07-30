@@ -6,7 +6,7 @@ const messages = {
         'SETUP_NEW': 'Click on the following link and fill in the required fields to connect to a Mailman3 server. If necessary, ask your Mailman administrator for help.\nPlease note that the setup link expires after 12 hours.\n\n{{0}}',
         'HELP': 'This bot can help you to moderate your mailman lists via Telegram Chat. To start, type /setup.',
         'MAIL_NOTIFICATION': 'Mailman message on hold!\n\nList: {{0}}\nFrom: {{1}}\nSubject: {{2}}\nReason: {{3}}\n\nWhat\'s your decision?',
-        'SETUP_SUCCESSFUL': '\n\nMailman connection successfully initialized. You can now wait for a message or call an manual /update.',
+        'SETUP_SUCCESSFUL': 'Mailman connection successfully initialized. You can now wait for a message or call an manual /update.',
         'RESET': 'Everything clear. Bot was reset. Call /setup to start again.',
         'NOT_INITIALIZED': 'Connection to mailman not initialized. Call /setup.',
         'EMPTY_QUEUE': 'All clear, no new mails 🏁',

@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const SetupError = require("./setup-error");
 const mailman = require('./mailman');
 const data = require('./data');
+const tm = require('../config/messages');
 
 const SESSION_MAX_AGE_IN_HOURS = 12;
 
@@ -23,7 +24,7 @@ const setupController = {
         return hash.digest(HASH_ENCODING);
     },
 
-    checkAndSaveSetup: async function (setupModel) {
+    checkAndSaveSetup: async function (setupModel, successCallback) {
         let maxAge = new Date();
         maxAge.setHours(maxAge.getHours() - SESSION_MAX_AGE_IN_HOURS);
         let chatId = await data.setupInit.getId(setupModel.sessionId, maxAge);
@@ -61,6 +62,7 @@ const setupController = {
         if(connectionResult === 200) {
             await data.mailmanConnections.set(chatId, newConnection);
             await data.setupInit.delete(chatId);
+            successCallback(chatId);
             return [];
         }
 

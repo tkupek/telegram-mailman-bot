@@ -88,7 +88,7 @@ app.post('/setup', urlencodedParser, [
 			data.password,
 			data.xAuthHeader
 		);
-		errorResponseArray = await setupController.checkAndSaveSetup(newSetupData);
+		errorResponseArray = await setupController.checkAndSaveSetup(newSetupData, handler.sendSetupSuccess);
 
 		if(errorResponseArray) {
 			responseCode = 200;
