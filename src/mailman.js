@@ -1,4 +1,5 @@
 const axios = require('axios');
+const urljoin = require('url-join');
 
 const mailman = {
 	getHeldMails: async function(connection) {
@@ -17,7 +18,7 @@ const mailman = {
 		// check list for open mails and returns the first open mail
 		let response;
 		try {
-			response = await axios.get(connection.url + '/lists/' + list + '/held', this.getAuthConfig(connection));
+			response = await axios.get(urljoin(connection.url, '/lists', list, '/held'), this.getAuthConfig(connection));
 		} catch (error) {
 		    console.error(error);
 		    return error;
@@ -40,7 +41,7 @@ const mailman = {
 	},
 	checkVersion: async function(connection) {
 		try {
-			let response = await axios.get(connection.url + '/system/versions', this.getAuthConfig(connection));
+			let response = await axios.get(urljoin(connection.url, '/system/versions'), this.getAuthConfig(connection));
 			return response.data.mailman_version;
 		} catch (error) {
 		    console.error(error);
@@ -49,7 +50,7 @@ const mailman = {
 	},
 	checkConnection: async function(connection) {
 		try {
-			let response = await axios.get(connection.url + '/system', this.getAuthConfig(connection));
+			let response = await axios.get(urljoin(connection.url, '/system'), this.getAuthConfig(connection));
 			return response.status;
 		} catch (error) {
 			console.error("Check connection with url " + connection.url + "failed.");
@@ -58,7 +59,7 @@ const mailman = {
 	},
 	moderateMail: async function(connection, list, request_id, action) {
 		try {
-			await axios.post(connection.url + '/lists/' + list + '/held/' + request_id, { 'action': action }, this.getAuthConfig(connection));
+			await axios.post(urljoin(connection.url, '/lists', list, '/held', request_id), { 'action': action }, this.getAuthConfig(connection));
 		} catch (error) {
 		    console.error(error);
 		    return error;
@@ -82,7 +83,7 @@ const mailman = {
 	},
 	getAllLists: async function (connection) {
 		try {
-			const response = await axios.get(connection.url + '/lists', this.getAuthConfig(connection));
+			const response = await axios.get(urljoin(connection.url, '/lists'), this.getAuthConfig(connection));
 			let availableLists = [];
 
 			response.data.entries.forEach(item => {

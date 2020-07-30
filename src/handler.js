@@ -1,4 +1,5 @@
 const Markup = require('telegraf/markup')
+const urljoin = require('url-join');
 
 const mailman = require('./mailman');
 const setupController = require('./setup-controller');
@@ -39,7 +40,7 @@ const handler = {
 		// TODO, catch already connected sessions
 	    await data.setupInit.delete(ctx.chat.id);
 		const newSetupToken = setupController.getNewSetupHash(ctx.chat.id);
-		const tokenUrl = process.env.BASE_URL + "/setup?id=" + newSetupToken; // TODO get base URL from GCloud
+		const tokenUrl = urljoin(process.env.BASE_URL, "/setup", "?id=" + newSetupToken); // TODO get base URL from GCloud
 
 		await data.openDecisions.delete(ctx.chat.id);
 		await data.setupInit.set(ctx.chat.id, newSetupToken, new Date());
