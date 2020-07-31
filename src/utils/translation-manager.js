@@ -1,4 +1,4 @@
-const messages = require('../config/messages');
+const messages = require('../../config/messages');
 
 let messagesLocale = messages[messages.default];
 

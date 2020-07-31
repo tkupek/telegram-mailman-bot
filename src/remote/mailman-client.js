@@ -1,18 +1,19 @@
 const axios = require('axios');
 const urljoin = require('url-join');
 
-const mailman = {
+const mailmanClient = {
 	getHeldMails: async function(connection) {
 		// checks all lists in connection and returns the first open mail
 		const selectedLists = await this.getSelectedLists(connection);
 
 		for (let list of selectedLists) {
-			heldMail = await mailman.getHeldMail(connection, list.address);
+			heldMail = await mailmanClient.getHeldMail(connection, list.address);
 			if(heldMail) {
 				return heldMail;
 			}
 		}
-		return;
+
+		return null;
 	},
 	getHeldMail: async function(connection, list) {
 		// check list for open mails and returns the first open mail
@@ -33,11 +34,16 @@ const mailman = {
 				'subject': entry.subject,
 				'reason': entry.reason,
 				'request_id': entry.request_id,
-				'remaining': result.total_size -1
+				'remaining': result.total_size - 1
 			};
 		}
-
-		return; // TODO find more elegant solution
+		/**
+		 * TODO: find more elegant solution
+		 *
+		 * Best solution would be: https://github.com/tc39/proposal-optional-chaining
+		 * But until this is fixed I would rather go with 'null'
+		 */
+		return null;
 	},
 	checkVersion: async function(connection) {
 		try {
@@ -125,4 +131,4 @@ const mailman = {
 	}
 };
 
-module.exports = mailman;
+module.exports = mailmanClient;
