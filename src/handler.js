@@ -19,33 +19,41 @@ const handler = {
 		bot.command('reset', handler.reset);
 		bot.command('update', handler.update);
 		bot.command('accept', handler.accept);
+		bot.command('lists', handler.lists);
 		bot.command('discard', handler.discard);
 		bot.command('reject', handler.reject);
 		bot.command('check', handler.check);
 		console.log('bot initialized...')
 	},
 	start: async function(ctx) {
-		let connection = await data.mailmanConnections.get(ctx.chat.id);
-
-		if(connection) {
+		if(await handler.isConnected(ctx)) {
 			return ctx.reply(tm.getMessage('START_INITIALIZED'));
 		} else {
 			return ctx.reply(tm.getMessage('START_NOT_INITIALIZED'))
 		}
 	},
+	isConnected: async function(ctx) {
+		let connection = await data.mailmanConnections.get(ctx.chat.id);
+		return connection ? true : false;
+	},
 	help: function(ctx) {
 		ctx.reply(tm.getMessage('HELP'));
 	},
 	setup: async function(ctx, next) {
-		// TODO, catch already connected sessions
+		let message = ''
+		if(await handler.isConnected(ctx)) {
+			message += tm.getMessage('SETUP_ALREADY_CONNECTED');
+		};
+
 	    await data.setupInit.delete(ctx.chat.id);
 		const newSetupToken = setupController.getNewSetupHash(ctx.chat.id);
-		const tokenUrl = urljoin(process.env.BASE_URL, "/setup", "?id=" + newSetupToken); // TODO get base URL from GCloud
+		const tokenUrl = urljoin(process.env.BASE_URL, "/setup", "?id=" + newSetupToken);
 
 		await data.openDecisions.delete(ctx.chat.id);
 		await data.setupInit.set(ctx.chat.id, newSetupToken, new Date());
 
-		return ctx.reply(tm.getMessage('SETUP_NEW', [tokenUrl]));
+		message += tm.getMessage('SETUP_NEW', [tokenUrl]);
+		return ctx.reply(message, Markup.removeKeyboard().extra());
 	},
 	sendSetupSuccess: function(client_id) {
 		bot.telegram.sendMessage(client_id, tm.getMessage('SETUP_SUCCESSFUL'));
@@ -155,6 +163,19 @@ const handler = {
 		}, 3000)
 
 		return ctx.reply(tm.getMessage('MODERATION_SUCCESS', [action]), Markup.removeKeyboard().extra());
+	},
+	lists: async function(ctx) {
+		let connection = await data.mailmanConnections.get(ctx.chat.id);
+		if(!connection) {
+			return ctx.reply(tm.getMessage('NOT_INITIALIZED'), Markup.removeKeyboard().extra());
+		}
+
+		let lists = await mailman.getSelectedLists(connection);
+		let listsText = '';
+		for (let list of lists) {
+			listsText += '• ' + list.address + '\n'
+		}
+		return ctx.reply(tm.getMessage('CHECK_LISTS', [listsText]));
 	}
 };
 
