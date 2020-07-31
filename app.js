@@ -33,17 +33,8 @@ app.get('/', async (req, res) => {
 });
 app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 app.get('/_ah/stop', async (req, res) => {
-	console.log('trigger stop');
-	// this is not working, bot is not stopped correctly and http 500 is given
-	try {
-		await bot.stop(() => {
-			console.log('bot stopped...')
-			res.sendStatus(200)
-		});
-	} catch(error) {
-		console.log('tada');
-		console.error(error);
-	}
+	await bot.stop();
+	res.sendStatus(200);
 });
 app.get('/_ah/start', async (req, res) => {
 	await bot.launch();
