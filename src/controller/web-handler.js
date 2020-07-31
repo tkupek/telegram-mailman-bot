@@ -12,7 +12,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const setupFields = setupController.setupFields;
 
 const webHandler = {
-    init: function (launch, stop, botHandler) {
+    init: function (launch, stop, botHandler, data) {
         const app = express();
 
         const renderStatusPage = pug.compileFile(path.join(__dirname, '..', '..', 'resources', 'status.pug'));

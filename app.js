@@ -23,4 +23,4 @@ let stop = async function() {
 
 
 // Setup and start webserver
-webHandler.init(launch, stop, botHandler);
+webHandler.init(launch, stop, botHandler, data);
