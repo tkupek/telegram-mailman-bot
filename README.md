@@ -38,6 +38,9 @@ On a successful connection, the bot will check for held mails on all lists that 
 
 ## Hosting & Support
 The bot is hosted on the [GCloud App Engine](https://cloud.google.com/appengine).
+
+A status page can be found at [https://mailman-moderator-bot.ey.r.appspot.com/](https://mailman-moderator-bot.ey.r.appspot.com/).
+
 If you do not want to store your credentials in the central database, you can easily setup your own private bot. Just make sure to provide your own app.yaml and set the environment variable *BOT_TOKEN* and *BASE_URL*.
 
 If you have any issues regarding the bot, feel free to open a [GitHub issue](https://github.com/tkupek/telegram-mailman-bot/issues).
