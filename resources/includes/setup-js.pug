@@ -1,0 +1,86 @@
+script.
+	const xhttp = new XMLHttpRequest();
+	let success = function() {
+		document.getElementById('input').classList.add("hide");
+		document.getElementById('success').classList.remove("hide");
+	};
+
+	let showError = function(id) {
+		document.getElementById(id).classList.remove("hide");
+	};
+
+	let checkErrors = function() {
+		return document.getElementById('url').value.length !== 0
+			&& document.getElementById('listsRegex').value.length !== 0
+			&& document.getElementById('username').value.length !== 0
+			&& document.getElementById('password').value.length !== 0;
+	};
+
+	let resetNotifications = function(id) {
+		document.getElementById('errorConnection').classList.add("hide");
+		document.getElementById('errorToken').classList.add("hide");
+		document.getElementById('errorUnknown').classList.add("hide");
+		document.getElementById('inputWarning').classList.add("hide");
+
+		document.getElementById('url').parentElement.classList.remove("is-invalid");
+		document.getElementById('listsRegex').parentElement.classList.remove("is-invalid");
+		document.getElementById('username').parentElement.classList.remove("is-invalid");
+		document.getElementById('password').parentElement.classList.remove("is-invalid");
+		document.getElementById('xAuthHeader').parentElement.classList.remove("is-invalid");
+
+		Array.from(document.getElementsByClassName('mdl-textfield__error')).forEach(label => {
+			label.classList.add("hide");
+		});
+	};
+
+	let handleResponse = function(status, response) {
+		console.log(response); // DEBUG
+		if(status === 500) {
+			error('errorUnknown');
+			return;
+		}
+		
+		document.getElementById('submit').classList.remove("hide");
+		response = JSON.parse(response);
+		let errors = response['errors'];
+
+		if(status === 200 && errors.length === 0) {
+			success();
+		}
+
+		let errorFields = [];
+		errors.forEach(error => {
+			if(error.param === 'sessionId') {
+				showError('errorToken');
+				return;
+			} else {
+				document.getElementById(error.param).parentElement.classList.add("is-invalid", "is-dirty");
+			}
+		});
+
+		showError('errorConnection');
+	};
+	let sendSetup = function() {
+		if(!checkErrors()) {
+			document.getElementById('inputWarning').classList.remove("hide");
+			return;
+		}
+		resetNotifications();
+		document.getElementById('submit').classList.add("hide");
+		
+		let parameter = '';
+		parameter += 'sessionId=' + document.getElementById('sessionId').getAttribute('value');
+		parameter += '&url=' + document.getElementById('url').value;
+		parameter += '&listsRegex=' + document.getElementById('listsRegex').value;
+		parameter += '&username=' + document.getElementById('username').value;
+		parameter += '&password=' + document.getElementById('password').value;
+		parameter += '&xAuthHeader=' + document.getElementById('xAuthHeader').value;
+
+		xhttp.onreadystatechange = function() {
+			(xhttp.readyState === XMLHttpRequest.DONE) && handleResponse(xhttp.status, xhttp.responseText);
+		}; 
+		xhttp.open('POST', '/setup', true);
+		xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhttp.send(parameter);
+	};
+	document.getElementById('submit').onclick = sendSetup

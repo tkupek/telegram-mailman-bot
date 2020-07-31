@@ -53,7 +53,10 @@ const mailman = {
 			let response = await axios.get(urljoin(connection.url, '/system'), this.getAuthConfig(connection));
 			return response.status;
 		} catch (error) {
-			console.error("Check connection with url " + connection.url + "failed.");
+			console.error("Check connection with url [" + connection.url + "] failed with status " + error.response.status.toString());
+			if(error.response.status === 404) {
+				return error.response.status;
+			}
 			return 499;
 		}
 	},

@@ -48,67 +48,14 @@ block content
 
 							div#failed
 							br
-							p#error(class='error hide') #[i(class="material-icons") warning] Connection failed. Please check parameters and mailman config.
+							p#inputWarning(class='hide') #[i(class="material-icons") warning] Please fill in all required fields.
+							p#errorConnection(class='error hide') #[i(class="material-icons") warning] Connection to mailman failed. Check your parameters and server config.
+							p#errorToken(class='error hide') #[i(class="material-icons") warning] Invalid token. It could have been expired. Call /setup to get a new one.
+							p#errorUnknown(class='error hide') #[i(class="material-icons") warning] An unknown error occured. The devs have been informed.
 
 							button#submit(class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect') Submit
 							br
 							br
 
 block footerscripts
-	script.
-		const xhttp = new XMLHttpRequest();
-		// TODO code AJAX post
-		let success = function() {
-			document.getElementById('input').classList.add("hide");
-			document.getElementById('error').classList.add("hide");
-			document.getElementById('success').classList.remove("hide");
-		};
-
-		let error = function() {
-			document.getElementById('error').classList.remove("hide");
-		};
-
-		let handleResponse = function(status, response) {
-			console.log(response);
-			response = JSON.parse(response);
-			let errors = response['errors'];
-
-			if(status === 200) {
-				if(errors.length === 0) {
-					success();
-				} else {
-					errors.forEach(error => {
-						// TODO, error color for field
-						//- document.getElementById(error.param)
-					});
-				}
-			}
-
-			if(status === 400) {
-				error();
-				// general parameter issue
-			}
-
-			if(status === 500) {
-				error();
-				// terribly wrong
-			}
-		};
-		let sendSetup = function() {
-			let parameter = '';
-
-			parameter += 'sessionId=' + document.getElementById('sessionId').getAttribute('value');
-			parameter += '&url=' + document.getElementById('url').value;
-			parameter += '&listsRegex=' + document.getElementById('listsRegex').value;
-			parameter += '&username=' + document.getElementById('username').value;
-			parameter += '&password=' + document.getElementById('password').value;
-			parameter += '&xAuthHeader=' + document.getElementById('xAuthHeader').value;
-
-			xhttp.onreadystatechange = function() {
-				(xhttp.readyState === XMLHttpRequest.DONE) && handleResponse(xhttp.status, xhttp.responseText);
-			}; 
-			xhttp.open('POST', '/setup', true);
-			xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			xhttp.send(parameter);
-		};
-		document.getElementById('submit').onclick = sendSetup
+	include includes/setup-js.pug

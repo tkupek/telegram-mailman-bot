@@ -35,13 +35,17 @@ app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 app.get('/_ah/stop', async (req, res) => {
 	console.log('trigger stop');
 	// this is not working, bot is not stopped correctly and http 500 is given
-	await bot.stop(() => {
-		console.log('bot stopped...')
-		res.sendStatus(200)
-	});
+	try {
+		await bot.stop(() => {
+			console.log('bot stopped...')
+			res.sendStatus(200)
+		});
+	} catch(error) {
+		console.log('tada');
+		console.error(error);
+	}
 });
 app.get('/_ah/start', async (req, res) => {
-	console.log('trigger start');
 	await bot.launch();
 	res.sendStatus(200);
 });
@@ -92,11 +96,10 @@ app.post('/setup', urlencodedParser, [
 
 		if(errorResponseArray) {
 			responseCode = 200;
-			console.log("Setup successful.")
 		} else {
 			responseCode = 500;
 			errorResponseArray = []
-			console.error("Setup unsuccessful.")
+			console.error("Setup failed terribly.")
 		}
 	} else {
 		responseCode = 400;

@@ -46,17 +46,17 @@ const setupController = {
 
         const connectionResult = await mailman.checkConnection(newConnection);
 
-        if(connectionResult === 499) {
+        if(connectionResult === 404) {
             return [
                 new SetupError(setupController.setupFields.url, setupModel.url)
             ];
-
         }
-        if(connectionResult === 401) {
+
+        if(connectionResult === 499) {
             return [
+                new SetupError(setupController.setupFields.url, setupModel.url),
                 new SetupError(setupController.setupFields.username),
                 new SetupError(setupController.setupFields.password),
-                new SetupError(setupController.setupFields.xAuthHeader)
             ];
         }
 
