@@ -1,4 +1,3 @@
-config/credentials.js
 node_modules/
 .gcloudignore
 app.yaml
