@@ -1,0 +1,61 @@
+extends layout.pug
+
+block content
+	- var id = 'setup';
+	include includes/header.pug
+	main(class='mdl-layout__content')
+		div(class='mdl-layout__tab-panel is-active')
+			section(class='section--center mdl-grid mdl-grid--no-spacing')
+				div(class='mdl-cell mdl-cell--12-col')
+					h4 Setup Mailman Connection
+
+					if !sessionId
+						p To setup the bot, open Telegram and call /setup.
+						br
+						br
+					else
+						p To connect the bot to your Mailman API, fill out the connection parameters below.
+						p For a detailed description of parameters and expected inputs, check the #[a(href='https://github.com/tkupek/telegram-mailman-bot') documentation.]
+
+						div#success(class='hide')
+							br
+							p(class='warning') #[i(class="material-icons") check_circle_outline] Connection checked and saved. Your bot is connected.
+							p You can leave this page now.
+
+						div#input
+
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input#url(class='mdl-textfield__input', type='text', pattern='https:\/\/.{1,}\..{2,}')
+								label(class='mdl-textfield__label', for='url') API URL (https://lists.example.org/api/3.1)
+								span(class='mdl-textfield__error', for='url') Input is not a valid HTTPS URL!
+							br
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input#listsRegex(class='mdl-textfield__input', type='text')
+								label(class='mdl-textfield__label', for='listsRegex') Lists (regex matching - enter '*' for all lists)
+							br
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input#username(class='mdl-textfield__input', type='text')
+								label(class='mdl-textfield__label', for='username') Username
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input#password(class='mdl-textfield__input', type='password')
+								label(class='mdl-textfield__label', for='password') Password
+							br
+							div(class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label')
+								input#xAuthHeader(class='mdl-textfield__input', type='text')
+								label(class='mdl-textfield__label', for='xAuthHeader') X-Auth Header (optional)
+							br
+							div#sessionId(class='hidden', value=sessionId)
+
+							div#failed
+							br
+							p#inputWarning(class='hide') #[i(class="material-icons") warning] Please fill in all required fields.
+							p#errorConnection(class='error hide') #[i(class="material-icons") warning] Connection to mailman failed. Check your parameters and server config.
+							p#errorToken(class='error hide') #[i(class="material-icons") warning] Invalid token. It could have been expired. Call /setup to get a new one.
+							p#errorUnknown(class='error hide') #[i(class="material-icons") warning] An unknown error occured. The devs have been informed.
+
+							button#submit(class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect') Submit
+							br
+							br
+
+block footerscripts
+	include includes/setup-js.pug

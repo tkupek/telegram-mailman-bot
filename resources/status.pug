@@ -1,0 +1,17 @@
+extends layout.pug
+
+block content
+	- var id = 'status';
+
+	include includes/header.pug
+
+	main(class='mdl-layout__content')
+		div(class='mdl-layout__tab-panel is-active')
+			section(class='section--center mdl-grid mdl-grid--no-spacing')
+				div(class='mdl-cell mdl-cell--12-col')
+					h4 Status
+					p The Telegram Mailman Moderator Bot is #[span(class='warning') up and running].
+					if connections === 1
+						p #[span(class='warning') #{connections}] connection monitored
+					else
+						p #[span(class='warning') #{connections}] connections monitored

@@ -1,6 +1,10 @@
-const {Datastore} = require('@google-cloud/datastore');
+const { Datastore } = require('@google-cloud/datastore');
 
 const datastore = new Datastore();
+
+const KEY_CONNECTION = 'connection';
+const KEY_DECISION = 'decision';
+const KEY_SETUP = 'setup';
 
 async function get(key) {
 	try {
@@ -48,30 +52,51 @@ async function query(query) {
 const data = {
 	mailmanConnections: {
 		get: function(id) {
-			return get(['connection', id]);
+			return get([KEY_CONNECTION, id]);
 		},
 		set: function(id, connection) {
-			return set(['connection', id], connection)
+			return set([KEY_CONNECTION, id], connection)
 		},
 		delete: function(id) {
-			return del(['connection', id]);
+			return del([KEY_CONNECTION, id]);
 		},
-		all: function() {
-			return query(datastore.createQuery('connection'));
+		all: async function() {
+			return await query(datastore.createQuery(KEY_CONNECTION));
 		},
 		count: async function() {
-			return (await query(datastore.createQuery('connection').select('__key__'))).length;
+			return (await query(datastore.createQuery(KEY_CONNECTION).select('__key__'))).length;
 		}
 	},
 	openDecisions: {
 		get: function(id) {
-			return get(['decision', id]);
+			return get([KEY_DECISION, id]);
 		},
 		set: function(id, decision) {
-			return set(['decision', id], decision);
+			return set([KEY_DECISION, id], decision);
 		},
 		delete: function(id) {
-			return del(['decision', id])
+			return del([KEY_DECISION, id])
+		}
+	},
+	setupInit: {
+		get: function(id) {
+			return get([KEY_SETUP, id]);
+		},
+		getId: async function(token, maxAgeDate) {
+			let result = await query(datastore.createQuery(KEY_SETUP)
+				.select('__key__')
+				.filter('token', '=', token)
+				.filter('created', '>', maxAgeDate));
+			if(result.length) {
+				return parseInt(result[0][0]);
+			}
+			return null;
+		},
+		set: function(id, setupToken, createdAt) {
+			return set([KEY_SETUP, id], { token: setupToken, created: createdAt });
+		},
+		delete: function(id) {
+			return del(['KEY_SETUP', id]);
 		}
 	}
 };

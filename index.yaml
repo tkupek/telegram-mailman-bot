@@ -1,0 +1,6 @@
+indexes:
+
+- kind: setup
+  properties:
+  - name: token
+  - name: created
