@@ -3,7 +3,7 @@
 This Telegram chatbot can be used to moderate your Mailman 3 lists via chat.
 After setup, the bot automatically checks the Mailman API for new held mails and asks you to accept, reject or discard the mail.
 
-![moderation example][doc/moderation-example]
+![moderation example](https://raw.githubusercontent.com/tkupek/telegram-mailman-bot/master/doc/moderation-example.jpg)
 
 ## Prerequisites
 The Mailman 3 API of your server has to be publicly available, secured with username and password.
@@ -39,3 +39,5 @@ On a successful connection, the bot will check for held mails on all lists that 
 ## Hosting & Support
 The bot is hosted on the [GCloud App Engine](https://cloud.google.com/appengine).
 If you do not want to store your credentials in the central database, you can easily setup your own private bot. Just make sure to provide your own app.yaml and set the environment variable *BOT_TOKEN* and *BASE_URL*.
+
+If you have any issues regarding the bot, feel free to open a [GitHub issue](https://github.com/tkupek/telegram-mailman-bot/issues).
