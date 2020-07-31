@@ -27,7 +27,7 @@ const botHandler = {
 		console.log('bot initialized...')
 	},
 	start: async function(ctx) {
-		if(await handler.isConnected(ctx)) {
+		if(await botHandler.isConnected(ctx)) {
 			return ctx.reply(tm.getMessage('START_INITIALIZED'));
 		} else {
 			return ctx.reply(tm.getMessage('START_NOT_INITIALIZED'))
@@ -42,7 +42,7 @@ const botHandler = {
 	},
 	setup: async function(ctx, next) {
 		let message = ''
-		if(await handler.isConnected(ctx)) {
+		if(await botHandler.isConnected(ctx)) {
 			message += tm.getMessage('SETUP_ALREADY_CONNECTED');
 		};
 

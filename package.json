@@ -10,6 +10,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.6.0",
     "node-cron": "^2.0.3",
+    "path": "^0.12.7",
     "pug": "^3.0.0",
     "telegraf": "^3.38.0",
     "url-join": "^4.0.1"

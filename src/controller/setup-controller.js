@@ -2,9 +2,9 @@
 
 const crypto = require('crypto');
 
-const SetupError = require("./setup-error");
-const mailman = require('./mailman');
-const data = require('./data');
+const SetupError = require("../repository/setup-error");
+const mailman = require('../remote/mailman-client');
+const data = require('../repository/data');
 
 const SESSION_MAX_AGE_IN_HOURS = 12;
 

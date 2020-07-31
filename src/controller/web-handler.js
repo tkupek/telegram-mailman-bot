@@ -2,15 +2,21 @@ const express = require('express');
 const { body, query, validationResult } = require('express-validator');
 const bodyParser = require('body-parser');
 const pug = require('pug');
+var path = require('path');
 
+const SetupModel = require("../repository/setup-model")
+const setupController = require('./setup-controller');
 const env = require('../env/environment');
 
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const setupFields = setupController.setupFields;
+
 const webHandler = {
-    init: function () {
+    init: function (launch, stop) {
         const app = express();
 
-        const renderStatusPage = pug.compileFile(__dirname + '/resources/status.pug');
-        const renderSetupPage = pug.compileFile(__dirname + '/resources/setup.pug');
+        const renderStatusPage = pug.compileFile(path.join(__dirname, '..', '..', 'resources', 'status.pug'));
+        const renderSetupPage = pug.compileFile(path.join(__dirname, '..', '..', 'resources', 'setup.pug'));
 
         app.get(env.web.path.status, async (req, res) => {
             let num_connections = await data.mailmanConnections.count();
@@ -18,11 +24,11 @@ const webHandler = {
         });
         app.get(env.web.path.favicon, (req, res) => res.sendStatus(204));
         app.get(env.web.path.stop, async (req, res) => {
-            await bot.stop();
+            await stop();
             res.sendStatus(200);
         });
         app.get(env.web.path.start, async (req, res) => {
-            await bot.launch();
+            await launch();
             res.sendStatus(200);
         });
         app.get(env.web.path.setup, [
