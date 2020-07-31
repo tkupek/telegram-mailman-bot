@@ -12,7 +12,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const setupFields = setupController.setupFields;
 
 const webHandler = {
-    init: function (launch, stop) {
+    init: function (launch, stop, botHandler) {
         const app = express();
 
         const renderStatusPage = pug.compileFile(path.join(__dirname, '..', '..', 'resources', 'status.pug'));
@@ -73,7 +73,7 @@ const webHandler = {
                     data.password,
                     data.xAuthHeader
                 );
-                errorResponseArray = await setupController.checkAndSaveSetup(newSetupData, handler.sendSetupSuccess);
+                errorResponseArray = await setupController.checkAndSaveSetup(newSetupData, botHandler.sendSetupSuccess);
 
                 if(errorResponseArray) {
                     responseCode = 200;

@@ -40,6 +40,9 @@ async function del(key) {
 async function query(query) {
 	try {
 		let result = await datastore.runQuery(query);
+		if(!result[0].length) {
+			return [];
+		}
 		return result[0].map(function(val) {
 			return [val[datastore.KEY]['id'], val];
 		});
@@ -97,7 +100,7 @@ const data = {
 			return set([KEY_SETUP, id], { token: setupToken, created: createdAt });
 		},
 		delete: function(id) {
-			return del(['KEY_SETUP', id]);
+			return del([KEY_SETUP, id]);
 		}
 	}
 };
