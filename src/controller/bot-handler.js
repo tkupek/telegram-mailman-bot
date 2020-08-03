@@ -1,9 +1,12 @@
+'use strict';
+
 const Markup = require('telegraf/markup')
 const urljoin = require('url-join');
 
 const mailman = require('../remote/mailman-client');
 const setupController = require('./setup-controller');
 const tm = require('../utils/translation-manager');
+const env = require('../env/environment');
 
 let data;
 let bot;
@@ -35,20 +38,20 @@ const botHandler = {
 	},
 	isConnected: async function(ctx) {
 		let connection = await data.mailmanConnections.get(ctx.chat.id);
-		return connection ? true : false;
+		return !!connection;
 	},
 	help: function(ctx) {
 		ctx.reply(tm.getMessage('HELP'));
 	},
-	setup: async function(ctx, next) {
+	setup: async function(ctx) {
 		let message = ''
 		if(await botHandler.isConnected(ctx)) {
 			message += tm.getMessage('SETUP_ALREADY_CONNECTED');
-		};
+		}
 
 	    await data.setupInit.delete(ctx.chat.id);
 		const newSetupToken = setupController.getNewSetupHash(ctx.chat.id);
-		const tokenUrl = urljoin(process.env.BASE_URL, "/setup", "?id=" + newSetupToken);
+		const tokenUrl = urljoin(process.env.BASE_URL, env.web.path.setup, "?id=" + newSetupToken);
 
 		await data.openDecisions.delete(ctx.chat.id);
 		await data.setupInit.set(ctx.chat.id, newSetupToken, new Date());
@@ -87,7 +90,7 @@ const botHandler = {
 		    .resize()
 		    .extra());
 	},
-	check: async function(ctx, next) {
+	check: async function(ctx) {
 		let connection = await data.mailmanConnections.get(ctx.chat.id);
 		if(!connection) {
 			return ctx.reply(tm.getMessage('NOT_INITIALIZED'), Markup.removeKeyboard().extra());

@@ -1,8 +1,10 @@
+'use strict';
+
 const express = require('express');
 const { body, query, validationResult } = require('express-validator');
 const bodyParser = require('body-parser');
 const pug = require('pug');
-var path = require('path');
+const path = require('path');
 
 const SetupModel = require("../repository/setup-model")
 const setupController = require('./setup-controller');
