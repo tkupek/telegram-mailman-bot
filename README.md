@@ -1,6 +1,6 @@
 # Telegram Mailman Moderator Bot
 
-This Telegram chatbot can be used to moderate your Mailman 3 lists via chat.
+This Telegram chatbot can be used to moderate your Mailman Suite 3 lists via chat.
 After setup, the bot automatically checks the Mailman API for new held mails and asks you to accept, reject or discard the mail.
 
 ![moderation example](https://raw.githubusercontent.com/tkupek/telegram-mailman-bot/master/doc/moderation-example.jpg)

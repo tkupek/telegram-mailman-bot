@@ -1,3 +1,5 @@
+'use strict';
+
 const cron = require('node-cron');
 const { Telegraf } = require('telegraf');
 

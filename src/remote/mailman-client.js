@@ -1,3 +1,5 @@
+'use strict';
+
 const axios = require('axios');
 const urljoin = require('url-join');
 
@@ -7,7 +9,7 @@ const mailmanClient = {
 		const selectedLists = await this.getSelectedLists(connection);
 
 		for (let list of selectedLists) {
-			heldMail = await mailmanClient.getHeldMail(connection, list.address);
+			const heldMail = await mailmanClient.getHeldMail(connection, list.address);
 			if(heldMail) {
 				return heldMail;
 			}

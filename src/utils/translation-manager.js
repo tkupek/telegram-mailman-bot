@@ -1,3 +1,5 @@
+'use strict';
+
 const messages = require('../../config/messages');
 
 let messagesLocale = messages[messages.default];

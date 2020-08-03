@@ -1,7 +1,15 @@
 {
   "name": "mailman-moderator-bot",
   "version": "1.0.0",
-  "description": "",
+  "license": "GPLv3",
+  "description": "This Telegram chat bot assists you to moderate your Mailman 3 lists via chat.",
+  "homepage": "https://github.com/tkupek/telegram-mailman-bot",
+  "keywords": [
+    "telegram",
+    "chat bot",
+    "mailman 3 suite",
+    "moderate"
+  ],
   "main": "app.js",
   "dependencies": {
     "@google-cloud/datastore": "^6.1.0",
@@ -20,6 +28,8 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Tobias Kupek <mail@tkupek.eu>",
+  "contributors": [
+    "Timo Tomasini <timo@tomasini-mail.de>"
+  ]
 }
