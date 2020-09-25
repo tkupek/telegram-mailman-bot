@@ -1,0 +1,4 @@
+cron:
+- description: "update all bots every 10 minutes"
+  url: /update/all
+  schedule: every 20 minutes

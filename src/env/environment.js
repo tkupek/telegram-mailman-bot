@@ -7,7 +7,8 @@ const env = {
             status: "/",
             setup: "/setup",
             stop: "/_ah/stop",
-            start: "/_ah/start"
+            start: "/_ah/start",
+            update: "/update/all"
         }
     }
 }
