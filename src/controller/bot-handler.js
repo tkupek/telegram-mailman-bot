@@ -27,7 +27,11 @@ const botHandler = {
 		bot.command('reject', botHandler.reject);
 		bot.command('check', botHandler.check);
 
-		console.log('bot initialized...')
+		bot.telegram.setWebhook(urljoin(process.env.BASE_URL, env.web.path.bot, process.env.BOT_TOKEN));
+		console.log('bot initialized...');
+	},
+	getBot: function() {
+		return bot;
 	},
 	start: async function(ctx) {
 		if(await botHandler.isConnected(ctx)) {

@@ -24,7 +24,7 @@ const webHandler = {
             let num_connections = await data.mailmanConnections.count();
             res.send(renderStatusPage({connections: num_connections}));
         });
-        app.get(env.web.path.update, async (req, res) => {
+        app.get(env.web.path.pull, async (req, res) => {
             let cronheader = req.headers['x-appengine-cron'] === 'true';
             let cronip = req.headers['x-appengine-user-ip'] === '0.1.0.1';
             if(!cronheader || !cronip) {
@@ -39,6 +39,7 @@ const webHandler = {
             await stop();
             res.sendStatus(200);
         });
+        app.use(botHandler.getBot().webhookCallback(env.web.path.bot + '/' + process.env.BOT_TOKEN));
         app.get(env.web.path.start, async (req, res) => {
             await launch();
             res.sendStatus(200);

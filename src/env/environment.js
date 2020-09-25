@@ -8,7 +8,8 @@ const env = {
             setup: "/setup",
             stop: "/_ah/stop",
             start: "/_ah/start",
-            update: "/update/all"
+            pull: "/update/all",
+            bot: "/bot"
         }
     }
 }

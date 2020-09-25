@@ -6,7 +6,7 @@ const botHandler = require('./src/controller/bot-handler');
 const webHandler = require('./src/controller/web-handler');
 
 // Start Bot
-const bot = new Telegraf(process.env.BOT_TOKEN)
+const bot = new Telegraf(process.env.BOT_TOKEN, {username: process.env.BOT_NAME})
 botHandler.init(bot, data);
 
 let launch = async function() {
