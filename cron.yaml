@@ -1,4 +1,4 @@
 cron:
-- description: "update all bots every 10 minutes"
+- description: "update all bots"
   url: /update/all
-  schedule: every 20 minutes
+  schedule: every 5 minutes
