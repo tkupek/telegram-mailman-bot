@@ -83,6 +83,16 @@ const mailmanClient = {
 		discard: 'discard',
 		reject: 'reject'
 	}),
+	banAddress: async function(connection, email, list) {
+		try {
+			await axios.post(urljoin(connection.url, '/lists', list, '/bans'), { 'email': email }, this.getAuthConfig(connection));
+		} catch (error) {
+			console.error(error);
+			return error;
+		}
+
+		return true;
+	},
 	getAuthConfig: function (connection) {
 		return {
 			auth: {

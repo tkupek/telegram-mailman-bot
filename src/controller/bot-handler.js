@@ -22,6 +22,7 @@ const botHandler = {
 		bot.command('reset', botHandler.reset);
 		bot.command('update', botHandler.update);
 		bot.command('accept', botHandler.accept);
+		bot.command('spam', botHandler.ban);
 		bot.command('lists', botHandler.lists);
 		bot.command('discard', botHandler.discard);
 		bot.command('reject', botHandler.reject);
@@ -87,7 +88,7 @@ const botHandler = {
 			return ctx.reply(tm.getMessage('CONNECTION_FAILED'), Markup.removeKeyboard().extra());
 		}
 
-		await data.openDecisions.set(ctx.chat.id, {'list': heldMail.list, 'request_id': heldMail.request_id});
+		await data.openDecisions.set(ctx.chat.id, {'list': heldMail.list, 'request_id': heldMail.request_id, 'sender': heldMail.from});
 		return ctx.reply(tm.getMessage('MAIL_NOTIFICATION', [heldMail.list, heldMail.from, heldMail.subject, heldMail.reason]), Markup
 			.keyboard(tm.getKeyboard('KEYBOARD_DECISION'), {columns: 3})
 			.oneTime()
@@ -132,7 +133,7 @@ const botHandler = {
 				return; // decision already pending
 			}
 
-			await data.openDecisions.set(id, {'list': heldMail.list, 'request_id': heldMail.request_id});
+			await data.openDecisions.set(id, {'list': heldMail.list, 'request_id': heldMail.request_id, 'sender': heldMail.from});
 			bot.telegram.sendMessage(id, tm.getMessage('MAIL_NOTIFICATION', [heldMail.list, heldMail.from, heldMail.subject, heldMail.reason]), Markup
 				.keyboard(tm.getKeyboard('KEYBOARD_DECISION'), {columns: 3})
 				.oneTime()
@@ -149,7 +150,7 @@ const botHandler = {
 	reject: async function(ctx) {
 		return await botHandler.decide(ctx, mailman.actions.reject);
 	},
-	decide: async function(ctx, action) {
+	decide: async function(ctx, action, ban = false) {
 		let connection = await data.mailmanConnections.get(ctx.chat.id);
 		if(!connection) {
 			return ctx.reply(tm.getMessage('NOT_INITIALIZED'), Markup.removeKeyboard().extra());
@@ -166,11 +167,25 @@ const botHandler = {
 		}
 		await data.openDecisions.delete(ctx.chat.id);
 
+		let reply;
+		if(ban) {
+			let result = await mailman.banAddress(connection, decision.sender, decision.list);
+			if(result instanceof Error) {
+				return ctx.reply(tm.getMessage('BAN_FAILED'), Markup.removeKeyboard().extra());
+			}
+			reply = ctx.reply(tm.getMessage('BAN_SUCCESS'), Markup.removeKeyboard().extra());
+		} else {
+			reply = ctx.reply(tm.getMessage('MODERATION_SUCCESS', [action]), Markup.removeKeyboard().extra());
+		}
+
 		setTimeout(function () {
 			botHandler.update_all(ctx.chat.id);
 		}, 3000)
 
-		return ctx.reply(tm.getMessage('MODERATION_SUCCESS', [action]), Markup.removeKeyboard().extra());
+		return reply;
+	},
+	ban: async function(ctx) {
+		return await botHandler.decide(ctx, mailman.actions.discard, true)
 	},
 	lists: async function(ctx) {
 		let connection = await data.mailmanConnections.get(ctx.chat.id);
