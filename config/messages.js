@@ -18,8 +18,8 @@ const messages = {
         'KEYBOARD_DECISION': ['/accept ✅', '/reject ↩️', '/discard ❌'],
         'NO_DECISION': 'No open decision. Call /update to check new mails.',
         'MODERATION_SUCCESS': 'Moderation successful. Decision [{{0}}] was sent.',
-        'BAN_SUCCESS': 'Mail discarded. Sender is now banned.]',
-        'BAN_FAILED': 'Mail discarded. Something went wrong while banning address.]',
+        'BAN_SUCCESS': 'Mail discarded. Sender is now banned.',
+        'BAN_FAILED': 'Mail discarded. Something went wrong while banning address.',
         'SETUP': 'To setup your mailman connection, please open the following URL and provide your connection parameters.\n{{0}}',
         'CHECK_LISTS': 'The following lists are monitored:\n{{0}}'
     }
