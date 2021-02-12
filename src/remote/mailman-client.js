@@ -93,6 +93,16 @@ const mailmanClient = {
 
 		return true;
 	},
+	banAddressGlobal: async function(connection, email) {
+		try {
+			await axios.post(urljoin(connection.url, '/bans'), { 'email': email }, this.getAuthConfig(connection));
+		} catch (error) {
+			console.error(error);
+			return error;
+		}
+
+		return true;
+	},
 	getAuthConfig: function (connection) {
 		return {
 			auth: {
