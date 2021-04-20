@@ -135,7 +135,7 @@ const botHandler = {
 
 			await data.openDecisions.set(id, {'list': heldMail.list, 'request_id': heldMail.request_id, 'sender': heldMail.from});
 			bot.telegram.sendMessage(id, tm.getMessage('MAIL_NOTIFICATION', [heldMail.list, heldMail.from, heldMail.subject, heldMail.reason]), Markup
-				.keyboard(tm.getKeyboard('KEYBOARD_DECISION'), {columns: 2})
+				.keyboard(tm.getKeyboard('KEYBOARD_DECISION'), {columns: 3})
 				.oneTime()
 				.resize()
 				.extra());

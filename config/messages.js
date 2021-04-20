@@ -15,7 +15,7 @@ const messages = {
         'CONNECTION_CHECK_SUCCESS': '✅ Connection check was successful.\nFound {{0}}',
         'CONNECTION_CHECK_FAIL': '❌ Connection check was not successful.',
         'DECISION_FAILED': 'Something went wrong while moderating mail. Check your connection settings.',
-        'KEYBOARD_DECISION': ['/accept ✅', '/reject ↩️'],
+        'KEYBOARD_DECISION': ['/accept ✅', '/reject ↩️', '/spam ❌'],
         'NO_DECISION': 'No open decision. Call /update to check new mails.',
         'MODERATION_SUCCESS': 'Moderation successful. Decision [{{0}}] was sent.',
         'BAN_SUCCESS': 'Mail discarded. Sender is now banned.',
